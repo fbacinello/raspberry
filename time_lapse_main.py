@@ -1,17 +1,18 @@
 import time_lapse_captures as cam
 
-PREVIEW = False
-CANT_FOTOS = 600
+PREVIEW = True
+CANT_FOTOS = 20
 TIEMPO_ENTRE_FOTO = 1
+FOLDER = "/home/pi/Desktop/time lapse prueba/"
 
 if PREVIEW:   
-    cam.preview()
+    cam.preview(FOLDER)
 else:
     tiempo = cam.calcular_tiempo_time_lapse(CANT_FOTOS,TIEMPO_ENTRE_FOTO)
     print("El time lapse sera de: "+ tiempo)
     entrada = input("Presionar S para empezar: ")
     if entrada.upper() == "S":
         print("Arranca el show")
-        cam.a()
-        image_number = 0
+        cam.time_lapse(CANT_FOTOS,TIEMPO_ENTRE_FOTO,FOLDER)
+        print("FINNNNNNNN")
 
