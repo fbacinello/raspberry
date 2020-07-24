@@ -1,12 +1,13 @@
 import time_lapse_captures as cam
 
 PREVIEW = True
-CANT_FOTOS = 20
+CANT_FOTOS = 30
 TIEMPO_ENTRE_FOTO = 1
-FOLDER = "/home/pi/Desktop/time lapse prueba/"
+FOLDER = "/home/pi/Desktop/domingo2/"
 
-if PREVIEW:   
-    cam.preview(FOLDER)
+if PREVIEW:
+     cam.preview(FOLDER)
+    #cam.record()
 else:
     tiempo = cam.calcular_tiempo_time_lapse(CANT_FOTOS,TIEMPO_ENTRE_FOTO)
     print("El time lapse sera de: "+ tiempo)
