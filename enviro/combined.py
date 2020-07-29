@@ -237,6 +237,29 @@ def main():
                     data = 1
                 display_text(variables[mode], data, unit)
 
+            if mode == 10:
+                # Everything on one screen
+                cpu_temp = get_cpu_temperature()
+                # Smooth out with some averaging to decrease jitter
+                cpu_temps = cpu_temps[1:] + [cpu_temp]
+                avg_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
+                raw_temp = bme280.get_temperature()
+                raw_data = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
+                save_data(0, raw_data)
+                display_everything()
+                raw_data = bme280.get_pressure()
+                save_data(1, raw_data)
+                display_everything()
+                raw_data = bme280.get_humidity()
+                save_data(2, raw_data)
+                if proximity < 10:
+                    raw_data = ltr559.get_lux()
+                else:
+                    raw_data = 1
+                save_data(3, raw_data)
+                display_everything()
+
+
     # Exit cleanly
     except KeyboardInterrupt:
         sys.exit(0)
