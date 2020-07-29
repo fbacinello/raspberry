@@ -72,6 +72,7 @@ def display_text(variable, data, unit):
     colours = [(v - vmin + 1) / (vmax - vmin + 1) for v in values[variable]]
     # Format the variable name and value
     for v in variables:
+        message = ""
         message += "{}: {:.1f} {}".format(variable[:i], data, unit)
 
     logging.info(message)
