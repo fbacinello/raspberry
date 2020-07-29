@@ -45,7 +45,7 @@ st7735 = ST7735.ST7735(
     cs=1,
     dc=9,
     backlight=12,
-    rotation=270,
+    rotation=90,
     spi_speed_hz=10000000
 )
 

@@ -39,7 +39,7 @@ st7735 = ST7735.ST7735(
     cs=1,
     dc=9,
     backlight=12,
-    rotation=270,
+    rotation=90,
     spi_speed_hz=10000000
 )
 
@@ -72,7 +72,7 @@ def display_text(variable, data, unit):
     colours = [(v - vmin + 1) / (vmax - vmin + 1) for v in values[variable]]
     # Format the variable name and value
     for v in variables:
-        message += "{}: {:.1f} {}".format(variable[:i], data, unit)        
+        message += "{}: {:.1f} {}".format(variable[:i], data, unit)
 
     logging.info(message)
     draw.rectangle((0, 0, WIDTH, HEIGHT), (255, 255, 255))
