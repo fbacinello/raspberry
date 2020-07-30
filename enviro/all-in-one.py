@@ -39,7 +39,7 @@ st7735 = ST7735.ST7735(
     cs=1,
     dc=9,
     backlight=12,
-    rotation=90,
+    rotation=270,
     spi_speed_hz=10000000
 )
 
@@ -71,10 +71,7 @@ def display_text(variable, data, unit):
     vmax = max(values[variable])
     colours = [(v - vmin + 1) / (vmax - vmin + 1) for v in values[variable]]
     # Format the variable name and value
-    for v in variables:
-        message = ""
-        message += "{}: {:.1f} {}".format(variable[:i], data, unit)
-
+    message = "{}: {:.1f} {}".format(variable[:4], data, unit)
     logging.info(message)
     draw.rectangle((0, 0, WIDTH, HEIGHT), (255, 255, 255))
     for i in range(len(colours)):
@@ -100,7 +97,7 @@ def get_cpu_temperature():
 
 # Tuning factor for compensation. Decrease this number to adjust the
 # temperature down, and increase to adjust up
-factor = 2.25
+factor = 2.15
 
 cpu_temps = [get_cpu_temperature()] * 5
 
