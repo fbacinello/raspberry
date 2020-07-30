@@ -59,11 +59,11 @@ HEIGHT = st7735.height
 img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
 draw = ImageDraw.Draw(img)
 font_size_small = 10
-font_size_large = 20
+font_size_large = 15
 font = ImageFont.truetype(UserFont, font_size_large)
 smallfont = ImageFont.truetype(UserFont, font_size_small)
-x_offset = 2
-y_offset = 2
+x_offset = 1
+y_offset = 1
 
 message = ""
 
@@ -154,13 +154,13 @@ def save_data(idx, data):
 # Displays all the text on the 0.96" LCD
 def display_everything():
     draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
-    column_count = 2
+    column_count = 1
     row_count = (len(variables) / column_count)
     for i in range(len(variables)):
         variable = variables[i]
         data_value = values[variable][-1]
         unit = units[i]
-        x = x_offset + ((WIDTH / column_count) * (i / row_count))
+        x = 0
         y = y_offset + ((HEIGHT / row_count) * (i % row_count))
         message = "{}: {:.1f} {}".format(variable[:4], data_value, unit)
         lim = limits[i]
@@ -168,7 +168,7 @@ def display_everything():
         for j in range(len(lim)):
             if data_value > lim[j]:
                 rgb = palette[j + 1]
-        draw.text((x, y), message, font=smallfont, fill=rgb)
+        draw.text((x, y), message, font=font, fill=rgb)
     st7735.display(img)
 
 
@@ -182,12 +182,12 @@ def get_cpu_temperature():
 def main():
     # Tuning factor for compensation. Decrease this number to adjust the
     # temperature down, and increase to adjust up
-    factor = 2.25
+    factor = 2.15
 
     cpu_temps = [get_cpu_temperature()] * 5
 
     delay = 0.5  # Debounce the proximity tap
-    mode = 4     # The starting mode
+    mode = 10     # The starting mode
     last_page = 0
 
     for v in variables:
