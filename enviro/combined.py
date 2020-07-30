@@ -20,6 +20,8 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from fonts.ttf import RobotoMedium as UserFont
 import logging
+import logger_csv
+from datetime import datetime
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -114,6 +116,12 @@ palette = [(0, 0, 255),           # Dangerously Low
 
 values = {}
 
+#Logger
+LOG = False
+logger = logger_csv.Logger()
+def log():    
+    logger.collect_data([datetime.now(), values['temperature'][-1]])
+    logger.log_data()
 
 # Displays data and text on the 0.96" LCD
 def display_text(variable, data, unit):
@@ -250,6 +258,8 @@ def main():
                 raw_data = bme280.get_pressure()
                 save_data(1, raw_data)
                 display_everything()
+                if LOG:
+                    log()
                 raw_data = bme280.get_humidity()
                 save_data(2, raw_data)
                 if proximity < 10:
