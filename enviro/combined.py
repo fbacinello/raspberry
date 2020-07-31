@@ -117,10 +117,11 @@ palette = [(0, 0, 255),           # Dangerously Low
 values = {}
 
 #Logger
-LOG = False
+LOG = True
 logger = logger_csv.Logger()
-def log():    
-    logger.collect_data([datetime.now(), values['temperature'][-1]]) #tengo que ver como pasar muchos argumentos (sin saber antes)
+def log():
+    dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
+    logger.collect_data(dic)
     logger.log_data()
 
 # Displays data and text on the 0.96" LCD
