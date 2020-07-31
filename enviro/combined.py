@@ -132,8 +132,8 @@ def retardar_logger():
     print("A MIMIRRRRRRRRRRRRRRRRRRR")
     print("-"*120)
     global LOG
-    sleep(600)
-    LOG = True
+    sleep(30)
+    LOG = False
     sleep(300)
     LOG = False
 

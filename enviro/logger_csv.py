@@ -8,7 +8,7 @@ class Logger:
 
     def collect_data(self, data):
         '''collect data and assign to class variable'''
-        self.data_dict['enviro'] = data
+        self.data_dict['enviro2'] = data
         
 
     def print_data(self):
