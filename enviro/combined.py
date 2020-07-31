@@ -133,8 +133,8 @@ def retardar_logger():
     print("-"*120)
     global LOG
     sleep(30)
-    LOG = False
-    sleep(300)
+    LOG = True
+    sleep(600)
     LOG = False
 
 # Displays data and text on the 0.96" LCD
