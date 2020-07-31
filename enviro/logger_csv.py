@@ -8,7 +8,7 @@ class Logger:
 
     def collect_data(self, data):
         '''collect data and assign to class variable'''
-        self.data_dict['time'] = data
+        self.data_dict['time2'] = data
         self.data_dict['temp'] = 22
         pass
 
