@@ -24,6 +24,7 @@ import logger_csv
 from datetime import datetime
 from time import sleep
 import threading
+from random import randint
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -126,7 +127,7 @@ def log():
     logger.collect_data(dic)
     logger.log_data()
     print("Logging")
-    
+
 def retardar_logger():
     print("-"*120)
     print("A MIMIRRRRRRRRRRRRRRRRRRR")
@@ -136,6 +137,10 @@ def retardar_logger():
     LOG = True
     sleep(1200)
     LOG = False
+
+def random_pixel():
+    global img
+    img.putpixel((randint(0, 80),randint(0,80)), (155,155,55))
 
 # Displays data and text on the 0.96" LCD
 def display_text(variable, data, unit):
@@ -175,6 +180,7 @@ def save_data(idx, data):
 
 # Displays all the text on the 0.96" LCD
 def display_everything():
+    random_pixel()
     draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
     column_count = 1
     row_count = (len(variables) / column_count)
@@ -204,7 +210,7 @@ def get_cpu_temperature():
 def main():
     t_logger = threading.Thread(target=retardar_logger)
     t_logger.start()
-    
+
     # Tuning factor for compensation. Decrease this number to adjust the
     # temperature down, and increase to adjust up
     factor = 2.15
