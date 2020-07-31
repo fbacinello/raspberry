@@ -22,6 +22,8 @@ from fonts.ttf import RobotoMedium as UserFont
 import logging
 import logger_csv
 from datetime import datetime
+from time import sleep
+import threading
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -117,12 +119,23 @@ palette = [(0, 0, 255),           # Dangerously Low
 values = {}
 
 #Logger
-LOG = True
+LOG = False
 logger = logger_csv.Logger()
 def log():
     dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
     logger.collect_data(dic)
     logger.log_data()
+    print("Logging")
+    
+def retardar_logger():
+    print("-"*120)
+    print("A MIMIRRRRRRRRRRRRRRRRRRR")
+    print("-"*120)
+    global LOG
+    sleep(600)
+    LOG = True
+    sleep(300)
+    LOG = False
 
 # Displays data and text on the 0.96" LCD
 def display_text(variable, data, unit):
@@ -189,6 +202,9 @@ def get_cpu_temperature():
 
 
 def main():
+    t_logger = threading.Thread(target=retardar_logger)
+    t_logger.start()
+    
     # Tuning factor for compensation. Decrease this number to adjust the
     # temperature down, and increase to adjust up
     factor = 2.15
