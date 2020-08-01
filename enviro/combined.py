@@ -140,7 +140,7 @@ def retardar_logger():
 
 def random_pixel():
     global img
-    img.putpixel((randint(0, 80),randint(0,80)), (155,155,55))
+    img.putpixel((randint(0, 79),randint(0,79)), (155,155,55))
 
 # Displays data and text on the 0.96" LCD
 def display_text(variable, data, unit):
