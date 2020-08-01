@@ -134,16 +134,18 @@ def random_pixel():
     img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
     img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
 
-def cirlce():
+def circle():
     while True:
         r = 8
         for i in range(4):
+            draw.rectangle((140, 0, 160, 20), (0, 0, 0))
             r = r - i
             leftUpPoint = (150-r, 10-r)
             rightDownPoint = (150+r, 10+r)
             twoPointList = [leftUpPoint, rightDownPoint]
             draw.ellipse(twoPointList, fill=(255,0,0,255))
         for i in range(4):
+            draw.rectangle((140, 0, 160, 20), (0, 0, 0))
             r = r + i
             leftUpPoint = (150-r, 10-r)
             rightDownPoint = (150+r, 10+r)
