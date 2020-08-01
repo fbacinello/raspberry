@@ -122,7 +122,7 @@ def retardar_logger():
     print("-"*120)
     global LOG
     sleep(30)
-    LOG = True
+    LOG = False
     sleep(1200)
     LOG = False
 
@@ -130,9 +130,9 @@ def random_pixel():
     global img
     global WIDTH
     global HEIGHT
-    img.putpixel((randint(0, WIDTH),randint(0,HEIGHT)), (155,155,55))
-    img.putpixel((randint(0, WIDTH),randint(0,HEIGHT)), (155,155,55))
-    img.putpixel((randint(0, WIDTH),randint(0,HEIGHT)), (155,155,55))
+    img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
+    img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
+    img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
 
 # Displays data and text on the 0.96" LCD
 def display_text(variable, data, unit):
@@ -167,7 +167,7 @@ def save_data(idx, data):
     values[variable] = values[variable][1:] + [data]
     unit = units[idx]
     message = "{}: {:.1f} {}".format(variable[:4], data, unit)
-    logging.info(message)
+    # logging.info(message)
 
 
 # Displays all the text on the 0.96" LCD
