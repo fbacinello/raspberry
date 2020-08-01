@@ -12,8 +12,6 @@ except ImportError:
     import ltr559
 
 from bme280 import BME280
-from pms5003 import PMS5003, ReadTimeoutError as pmsReadTimeoutError, SerialTimeoutError
-from enviroplus import gas
 from subprocess import PIPE, Popen
 from PIL import Image
 from PIL import ImageDraw
@@ -39,10 +37,6 @@ Press Ctrl+C to exit!
 
 # BME280 temperature/pressure/humidity sensor
 bme280 = BME280()
-
-# PMS5003 particulate sensor
-pms5003 = PMS5003()
-time.sleep(1.0)
 
 # Create ST7735 LCD display class
 st7735 = ST7735.ST7735(
@@ -102,13 +96,7 @@ units = ["C",
 limits = [[4, 18, 28, 35],
           [250, 650, 1013.25, 1015],
           [20, 30, 60, 70],
-          [-1, -1, 30000, 100000],
-          [-1, -1, 40, 50],
-          [-1, -1, 450, 550],
-          [-1, -1, 200, 300],
-          [-1, -1, 50, 100],
-          [-1, -1, 50, 100],
-          [-1, -1, 50, 100]]
+          [-1, -1, 30000, 100000]]
 
 # RGB palette for values on the combined screen
 palette = [(0, 0, 255),           # Dangerously Low
@@ -180,8 +168,8 @@ def save_data(idx, data):
 
 # Displays all the text on the 0.96" LCD
 def display_everything():
-    random_pixel()
     draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
+    random_pixel()
     column_count = 1
     row_count = (len(variables) / column_count)
     for i in range(len(variables)):
