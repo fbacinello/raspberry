@@ -10,6 +10,12 @@ from subprocess import PIPE, Popen
 # BME280 temperature/pressure/humidity sensor
 bme280 = BME280()
 
+def __init__():
+    self.cpu_temps = [get_cpu_temperature()] * 5
+
+
+factor = 2.15
+
 # Get the temperature of the CPU for compensation
 def get_cpu_temperature():
     process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE, universal_newlines=True)
