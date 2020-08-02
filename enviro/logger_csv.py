@@ -9,7 +9,7 @@ class Logger:
     def collect_data(self, data):
         '''collect data and assign to class variable'''
         self.data_dict['enviro aire power'] = data
-        
+
 
     def print_data(self):
         '''print selected data in nicely formatted string'''
@@ -23,6 +23,19 @@ class Logger:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
                 #writer.writeheader()
                 writer.writerow(data)
+
+    def log():
+        dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
+        logger.collect_data(dic)
+        logger.log_data()
+        print("Logging")
+
+    def retardar_logger():
+        print("-"*120)
+        print("A MIMIRRRRRRRRRRRRRRRRRRR")
+        print("-"*120)
+        sleep(30)
+        sleep(1200)
 
 def main():
     logger = Logger()
