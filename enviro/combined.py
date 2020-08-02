@@ -134,23 +134,26 @@ def random_pixel():
     img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
     img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
 
+r = 8
+creciendo = False
 def circle():
-    while True:
-        r = 8
-        for i in range(4):
-            draw.rectangle((140, 0, 160, 20), (0, 0, 0))
-            r = r - i
-            leftUpPoint = (150-r, 10-r)
-            rightDownPoint = (150+r, 10+r)
-            twoPointList = [leftUpPoint, rightDownPoint]
-            draw.ellipse(twoPointList, fill=(255,0,0,255))
-        for i in range(4):
-            draw.rectangle((140, 0, 160, 20), (0, 0, 0))
-            r = r + i
-            leftUpPoint = (150-r, 10-r)
-            rightDownPoint = (150+r, 10+r)
-            twoPointList = [leftUpPoint, rightDownPoint]
-            draw.ellipse(twoPointList, fill=(255,0,0,255))
+    global r
+    global creciendo
+    if creciendo:        
+        r = r + 1        
+    else:        
+        r = r - 1
+    
+    draw.rectangle((140, 0, 160, 20), (0, 0, 0))
+    leftUpPoint = (150-r, 10-r)
+    rightDownPoint = (150+r, 10+r)
+    twoPointList = [leftUpPoint, rightDownPoint]
+    draw.ellipse(twoPointList, fill=(255,0,0,255))
+    
+    if r == 0:
+        creciendo = True
+    if r == 8:
+        creciendo = False
 
 # Displays data and text on the 0.96" LCD
 def display_text(variable, data, unit):
@@ -192,6 +195,7 @@ def save_data(idx, data):
 def display_everything():
     draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
     #random_pixel()
+    circle()
     column_count = 1
     row_count = (len(variables) / column_count)
     for i in range(len(variables)):
@@ -221,8 +225,9 @@ def main():
     t_logger = threading.Thread(target=retardar_logger)
     t_logger.start()
 
-    t_circle = threading.Thread(target=circle)
-    t_circle.start()
+    #t_circle = threading.Thread(target=circle)
+    #t_circle.start()
+    
     # Tuning factor for compensation. Decrease this number to adjust the
     # temperature down, and increase to adjust up
     factor = 2.15
