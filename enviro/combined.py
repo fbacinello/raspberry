@@ -139,17 +139,17 @@ creciendo = False
 def circle():
     global r
     global creciendo
-    if creciendo:        
-        r = r + 1        
-    else:        
+    if creciendo:
+        r = r + 1
+    else:
         r = r - 1
-    
+
     draw.rectangle((140, 0, 160, 20), (0, 0, 0))
     leftUpPoint = (150-r, 10-r)
     rightDownPoint = (150+r, 10+r)
     twoPointList = [leftUpPoint, rightDownPoint]
     draw.ellipse(twoPointList, fill=(255,0,0,255))
-    
+
     if r == 0:
         creciendo = True
     if r == 8:
@@ -227,7 +227,7 @@ def main():
 
     #t_circle = threading.Thread(target=circle)
     #t_circle.start()
-    
+
     # Tuning factor for compensation. Decrease this number to adjust the
     # temperature down, and increase to adjust up
     factor = 2.15
@@ -308,7 +308,6 @@ def main():
                     raw_data = 1
                 save_data(3, raw_data)
                 display_everything()
-
 
     # Exit cleanly
     except KeyboardInterrupt:

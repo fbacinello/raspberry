@@ -10,7 +10,7 @@ from time import sleep
 import threading
 from random import randint
 import display
-import sensors as sensor
+import sensors
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -79,9 +79,10 @@ def save_data(idx, data):
 def main():
     #t_logger = threading.Thread(target=retardar_logger)
     #t_logger.start()
-    
 
- 
+    sensor = Sensors()
+    display = Display()
+
 
     delay = 0.5  # Debounce the proximity tap
     mode = 10     # The starting mode
@@ -96,10 +97,10 @@ def main():
             # Everything on one screen
             raw_data= sensor.get_temperature()
             save_data(0, raw_data)
-            display.display_everything()
+            display.display_everything(variables)
             raw_data = sensor.get_pressure()
             save_data(1, raw_data)
-            display.display_everything()
+            display.display_everything(variables)
             # if LOG:
             #     log()
             raw_data = sensor.get_humidity()
@@ -109,7 +110,7 @@ def main():
             else:
                 raw_data = 1
             save_data(3, raw_data)
-            display.display_everything()
+            display.display_everything(variables)
 
     # Exit cleanly
     except KeyboardInterrupt:
