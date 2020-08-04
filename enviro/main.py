@@ -9,7 +9,7 @@ from datetime import datetime
 from time import sleep
 import threading
 from random import randint
-import display
+import display as disp
 import sensors
 
 logging.basicConfig(
@@ -80,8 +80,8 @@ def main():
     #t_logger = threading.Thread(target=retardar_logger)
     #t_logger.start()
 
-    sensor = Sensors()
-    display = Display()
+    sensor = sensors.Sensors()
+    display = disp.Display()
 
 
     delay = 0.5  # Debounce the proximity tap

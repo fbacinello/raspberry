@@ -5,36 +5,36 @@ from PIL import ImageFont
 from fonts.ttf import RobotoMedium as UserFont
 
 class Display:
-    # Create ST7735 LCD display class
-    st7735 = ST7735.ST7735(
-        port=0,
-        cs=1,
-        dc=9,
-        backlight=12,
-        rotation=90,
-        spi_speed_hz=10000000
-    )
-
     def __init__(self, rotation = 90):
-        st7735.rotation = rotation
+            # Create ST7735 LCD display class
+        self.st7735 = ST7735.ST7735(
+            port=0,
+            cs=1,
+            dc=9,
+            backlight=12,
+            rotation=90,
+            spi_speed_hz=10000000
+        )
+        
+        self.st7735.rotation = rotation
         # Initialize display
-        st7735.begin()
+        self.st7735.begin()
 
-    WIDTH = st7735.width
-    HEIGHT = st7735.height
+        self.WIDTH = st7735.width
+        self.HEIGHT = st7735.height
 
-    # Set up canvas and font
-    img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    font_size_small = 10
-    font_size_large = 15
-    font = ImageFont.truetype(UserFont, font_size_large)
-    smallfont = ImageFont.truetype(UserFont, font_size_small)
-    x_offset = 1
-    y_offset = 1
+        # Set up canvas and font
+        img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
+        self.draw = ImageDraw.Draw(img)
+        font_size_small = 10
+        font_size_large = 15
+        self.font = ImageFont.truetype(UserFont, font_size_large)
+        selfsmallfont = ImageFont.truetype(UserFont, font_size_small)
+        self.x_offset = 1
+        self.y_offset = 1
 
-    # The position of the top bar
-    top_pos = 25
+        # The position of the top bar
+        top_pos = 25
 
     def random_pixel(self):
         global img
@@ -54,11 +54,11 @@ class Display:
         else:
             r = r - 1
 
-        draw.rectangle((140, 0, 160, 20), (0, 0, 0))
+        self.draw.rectangle((140, 0, 160, 20), (0, 0, 0))
         leftUpPoint = (150-r, 10-r)
         rightDownPoint = (150+r, 10+r)
         twoPointList = [leftUpPoint, rightDownPoint]
-        draw.ellipse(twoPointList, fill=(255,0,0,255))
+        self.draw.ellipse(twoPointList, fill=(255,0,0,255))
 
         if r == 0:
             creciendo = True
@@ -92,9 +92,9 @@ class Display:
 
     # Displays all the text on the 0.96" LCD
     def display_everything(self, variables):
-        draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
+        self.draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
         #random_pixel()
-        circle()
+        self.circle()
         column_count = 1
         row_count = (len(variables) / column_count)
         for i in range(len(variables)):
@@ -104,10 +104,10 @@ class Display:
             x = 0
             y = y_offset + ((HEIGHT / row_count) * (i % row_count))
             message = "{}: {:.1f} {}".format(variable[:4], data_value, unit)
-            lim = limits[i]
+            lim = self.limits[i]
             rgb = palette[0]
             for j in range(len(lim)):
                 if data_value > lim[j]:
                     rgb = palette[j + 1]
-            draw.text((x, y), message, font=font, fill=rgb)
-        st7735.display(img)
+            self.draw.text((x, y), message, font=font, fill=rgb)
+        self.st7735.display(img)
