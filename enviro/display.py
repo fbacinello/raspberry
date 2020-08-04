@@ -15,7 +15,7 @@ class Display:
             rotation=90,
             spi_speed_hz=10000000
         )
-        
+
         self.st7735.rotation = rotation
         # Initialize display
         self.st7735.begin()
@@ -32,6 +32,31 @@ class Display:
         selfsmallfont = ImageFont.truetype(UserFont, font_size_small)
         self.x_offset = 1
         self.y_offset = 1
+
+        # Define your own warning limits
+        # The limits definition follows the order of the variables array
+        # Example limits explanation for temperature:
+        # [4,18,28,35] means
+        # [-273.15 .. 4] -> Dangerously Low
+        # (4 .. 18]      -> Low
+        # (18 .. 28]     -> Normal
+        # (28 .. 35]     -> High
+        # (35 .. MAX]    -> Dangerously High
+        # DISCLAIMER: The limits provided here are just examples and come
+        # with NO WARRANTY. The authors of this example code claim
+        # NO RESPONSIBILITY if reliance on the following values or this
+        # code in general leads to ANY DAMAGES or DEATH.
+        self.limits = [[4, 18, 28, 35],
+                  [250, 650, 1013.25, 1015],
+                  [20, 30, 60, 70],
+                  [-1, -1, 30000, 100000]]
+
+        # RGB palette for values on the combined screen
+        self.palette = [(0, 0, 255),           # Dangerously Low
+                   (0, 255, 255),         # Low
+                   (0, 255, 0),           # Normal
+                   (255, 255, 0),         # High
+                   (255, 0, 0)]           # Dangerously High
 
         # The position of the top bar
         top_pos = 25
@@ -102,10 +127,10 @@ class Display:
             data_value = values[variable][-1]
             unit = units[i]
             x = 0
-            y = y_offset + ((HEIGHT / row_count) * (i % row_count))
+            y = self.y_offset + ((HEIGHT / row_count) * (i % row_count))
             message = "{}: {:.1f} {}".format(variable[:4], data_value, unit)
             lim = self.limits[i]
-            rgb = palette[0]
+            rgb = self.palette[0]
             for j in range(len(lim)):
                 if data_value > lim[j]:
                     rgb = palette[j + 1]
