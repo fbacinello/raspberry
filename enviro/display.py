@@ -6,6 +6,8 @@ from fonts.ttf import RobotoMedium as UserFont
 
 class Display:
     def __init__(self, rotation = 90):
+        self.r = 8
+        self.creciendo = False
             # Create ST7735 LCD display class
         self.st7735 = ST7735.ST7735(
             port=0,
@@ -20,12 +22,12 @@ class Display:
         # Initialize display
         self.st7735.begin()
 
-        self.WIDTH = st7735.width
-        self.HEIGHT = st7735.height
+        self.WIDTH = self.st7735.width
+        self.HEIGHT = self.st7735.height
 
         # Set up canvas and font
-        img = Image.new('RGB', (WIDTH, HEIGHT), color=(0, 0, 0))
-        self.draw = ImageDraw.Draw(img)
+        self.img = Image.new('RGB', (self.WIDTH, self.HEIGHT), color=(0, 0, 0))
+        self.draw = ImageDraw.Draw(self.img)
         font_size_small = 10
         font_size_large = 15
         self.font = ImageFont.truetype(UserFont, font_size_large)
@@ -69,26 +71,23 @@ class Display:
         img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
         img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
 
-    r = 8
-    creciendo = False
+    
     def circle(self):
-        global r
-        global creciendo
-        if creciendo:
-            r = r + 1
+        if self.creciendo:
+            self.r = self.r + 1
         else:
-            r = r - 1
+            self.r = self.r - 1
 
         self.draw.rectangle((140, 0, 160, 20), (0, 0, 0))
-        leftUpPoint = (150-r, 10-r)
-        rightDownPoint = (150+r, 10+r)
+        leftUpPoint = (150-self.r, 10-self.r)
+        rightDownPoint = (150+self.r, 10+self.r)
         twoPointList = [leftUpPoint, rightDownPoint]
         self.draw.ellipse(twoPointList, fill=(255,0,0,255))
 
-        if r == 0:
-            creciendo = True
-        if r == 8:
-            creciendo = False
+        if self.r == 0:
+            self.creciendo = True
+        if self.r == 8:
+            self.creciendo = False
 
     # Displays data and text on the 0.96" LCD
     def display_text(self, variable, data, unit):
@@ -116,8 +115,8 @@ class Display:
         st7735.display(img)
 
     # Displays all the text on the 0.96" LCD
-    def display_everything(self, variables):
-        self.draw.rectangle((0, 0, WIDTH, HEIGHT), (0, 0, 0))
+    def display_everything(self, variables, values, units):
+        self.draw.rectangle((0, 0, self.WIDTH, self.HEIGHT), (0, 0, 0))
         #random_pixel()
         self.circle()
         column_count = 1
@@ -127,12 +126,12 @@ class Display:
             data_value = values[variable][-1]
             unit = units[i]
             x = 0
-            y = self.y_offset + ((HEIGHT / row_count) * (i % row_count))
+            y = self.y_offset + ((self.HEIGHT / row_count) * (i % row_count))
             message = "{}: {:.1f} {}".format(variable[:4], data_value, unit)
             lim = self.limits[i]
             rgb = self.palette[0]
             for j in range(len(lim)):
                 if data_value > lim[j]:
-                    rgb = palette[j + 1]
-            self.draw.text((x, y), message, font=font, fill=rgb)
-        self.st7735.display(img)
+                    rgb = self.palette[j + 1]
+            self.draw.text((x, y), message, font=self.font, fill=rgb)
+        self.st7735.display(self.img)

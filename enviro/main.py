@@ -72,20 +72,20 @@ def main():
             # Everything on one screen
             raw_data= sensor.get_temperature()
             save_data(0, raw_data)
-            display.display_everything(variables)
+            display.display_everything(variables, values, units)
             raw_data = sensor.get_pressure()
             save_data(1, raw_data)
-            display.display_everything(variables)
+            display.display_everything(variables, values, units)
             # if LOG:
             #     log()
             raw_data = sensor.get_humidity()
             save_data(2, raw_data)
-            if proximity < 10:
+            if sensor.get_proximity() < 10:
                 raw_data = sensor.get_lux()
             else:
                 raw_data = 1
             save_data(3, raw_data)
-            display.display_everything(variables)
+            display.display_everything(variables, values, units)
 
     # Exit cleanly
     except KeyboardInterrupt:

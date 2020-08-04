@@ -11,6 +11,7 @@ class Sensors:
 
 
     def __init__(self):
+        self.ltr559 = LTR559()
         self.cpu_temps = None
         # BME280 temperature/pressure/humidity sensor
         self.bme280 = BME280()
@@ -35,13 +36,13 @@ class Sensors:
         return raw_data
 
     def get_pressure(self):
-        return bme280.get_pressure()
+        return self.bme280.get_pressure()
 
     def get_humidity(self):
-        return bme280.get_humidity()
+        return self.bme280.get_humidity()
 
     def get_lux(self):
-        return ltr559.get_lux()
+        return self.ltr559.get_lux()
 
     def get_proximity(self):
         return ltr559.get_proximity()
