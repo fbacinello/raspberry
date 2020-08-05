@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 
-import time
-import colorsys
 import sys
 import logging
 import logger_csv
-from datetime import datetime
-from time import sleep
-import threading
-from random import randint
 import display as disp
 import sensors
 
@@ -25,7 +19,6 @@ Press Ctrl+C to exit!
 
 message = ""
 
-
 # Create a values dict to store the data
 variables = ["temperature",
              "pressure",
@@ -39,8 +32,9 @@ units = ["C",
 
 values = {}
 
-#Logger
+# Logger
 LOG = False
+
 
 # Saves the data to be used in the graphs later and prints to the log
 def save_data(idx, data):
@@ -51,16 +45,16 @@ def save_data(idx, data):
     message = "{}: {:.1f} {}".format(variable[:4], data, unit)
     # logging.info(message)
 
+
 def main():
-    #t_logger = threading.Thread(target=retardar_logger)
-    #t_logger.start()
+    # t_logger = threading.Thread(target=retardar_logger)
+    # t_logger.start()
 
     sensor = sensors.Sensors()
     display = disp.Display()
 
-
     delay = 0.5  # Debounce the proximity tap
-    mode = 10     # The starting mode
+    mode = 10  # The starting mode
     last_page = 0
 
     for v in variables:
@@ -70,7 +64,7 @@ def main():
     try:
         while True:
             # Everything on one screen
-            raw_data= sensor.get_temperature()
+            raw_data = sensor.get_temperature()
             save_data(0, raw_data)
             display.display_everything(variables, values, units)
             raw_data = sensor.get_pressure()
@@ -90,6 +84,7 @@ def main():
     # Exit cleanly
     except KeyboardInterrupt:
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
