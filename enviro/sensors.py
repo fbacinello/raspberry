@@ -8,13 +8,13 @@ except ImportError:
 from subprocess import PIPE, Popen
 
 class Sensors:
-
-
     def __init__(self):
-        self.ltr559 = LTR559()
-        self.cpu_temps = None
         # BME280 temperature/pressure/humidity sensor
         self.bme280 = BME280()
+        # Light sensor
+        self.ltr559 = LTR559()
+
+        self.cpu_temps = None
         self.factor = 2.15
 
     # Get the temperature of the CPU for compensation
@@ -26,7 +26,7 @@ class Sensors:
     def get_temperature(self):
         if self.cpu_temps == None:
             self.cpu_temps = [self.get_cpu_temperature()] * 5
-            
+
         cpu_temp = self.get_cpu_temperature()
         # Smooth out with some averaging to decrease jitter
         self.cpu_temps = self.cpu_temps[1:] + [cpu_temp]
@@ -46,4 +46,4 @@ class Sensors:
         return self.ltr559.get_lux()
 
     def get_proximity(self):
-        return ltr559.get_proximity()
+        return self.ltr559.get_proximity()
