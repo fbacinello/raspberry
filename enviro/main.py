@@ -73,7 +73,8 @@ def main():
     sensor = sensors.Sensors()
     display = disp.Display()
 
-    retardar_logger()
+    t_logger = threading.Thread(target=retardar_logger)
+    t_logger.start()
 
     for v in variables:
         values[v] = [1] * 160
