@@ -2,9 +2,12 @@
 
 import sys
 import logging
-import logger_csv
+import logger_csv as logger
+from datetime import datetime
+from time import sleep
 import display as disp
 import sensors
+import threading
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -35,6 +38,26 @@ values = {}
 # Logger
 LOG = False
 
+def log():
+    global LOG
+    while LOG:
+        dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
+        logger.collect_data(dic)
+        logger.log_data()
+        print("Logging")
+        sleep(60)
+
+
+def retardar_logger():
+    global LOG
+    print("-" * 100)
+    print("A MIMIRRRRRRRRRRRRRRRRRRR")
+    print("-" * 100)
+    sleep(30)
+    LOG = True
+    t_logger = threading.Thread(target=log)
+    t_logger.start()
+
 
 # Saves the data to be used in the graphs later and prints to the log
 def save_data(idx, data):
@@ -42,20 +65,15 @@ def save_data(idx, data):
     # Maintain length of list
     values[variable] = values[variable][1:] + [data]
     unit = units[idx]
-    message = "{}: {:.1f} {}".format(variable[:4], data, unit)
+    # message = "{}: {:.1f} {}".format(variable[:4], data, unit)
     # logging.info(message)
 
 
 def main():
-    # t_logger = threading.Thread(target=retardar_logger)
-    # t_logger.start()
-
     sensor = sensors.Sensors()
     display = disp.Display()
 
-    delay = 0.5  # Debounce the proximity tap
-    mode = 10  # The starting mode
-    last_page = 0
+    retardar_logger()
 
     for v in variables:
         values[v] = [1] * 160

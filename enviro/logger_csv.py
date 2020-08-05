@@ -2,45 +2,33 @@ import csv
 from datetime import datetime
 from time import sleep
 
+
 class Logger:
     def __init__(self):
         self.data_dict = {}
 
     def collect_data(self, data):
-        '''collect data and assign to class variable'''
+        """collect data and assign to class variable"""
         self.data_dict['enviro aire power'] = data
 
-
     def print_data(self):
-        '''print selected data in nicely formatted string'''
-        print("-"*120)
+        """print selected data in nicely formatted string"""
+        print("-" * 120)
         print("{0:%Y-%m-%d, %H:%M:%S}".format(self.data_dict["enviro"]))
 
     def log_data(self):
-        '''log data into csv file'''
+        """log data into csv file"""
         for file, data in self.data_dict.items():
             with open('data/' + file + ".csv", 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
-                #writer.writeheader()
+                # writer.writeheader()
                 writer.writerow(data)
 
-    def log():
-        dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
-        logger.collect_data(dic)
-        logger.log_data()
-        print("Logging")
-
-    def retardar_logger():
-        print("-"*120)
-        print("A MIMIRRRRRRRRRRRRRRRRRRR")
-        print("-"*120)
-        sleep(30)
-        sleep(1200)
 
 def main():
     logger = Logger()
-    logger.collect_data() #va a fallar aca
+    logger.collect_data()  # va a fallar aca
     logger.log_data()
     logger.print_data()
 
-#main()
+# main()

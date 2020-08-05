@@ -5,7 +5,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8813f7a7-bbec-486a-a617-003a06b8c248" name="Default Changelist" comment="">
+    <list default="true" id="8813f7a7-bbec-486a-a617-003a06b8c248" name="Default Changelist" comment="Probando pycharm.&#10;Limpio un poco el sensors.py">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enviro/logger_csv.py" beforeDir="false" afterPath="$PROJECT_DIR$/enviro/logger_csv.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/enviro/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/enviro/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,6 +65,21 @@
       <option name="presentableId" value="Default" />
       <updated>1596555517126</updated>
     </task>
+    <task id="LOCAL-00001" summary="Probando pycharm.&#10;Limpio un poco el main">
+      <created>1596609361311</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1596609361311</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Probando pycharm.&#10;Limpio un poco el sensors.py">
+      <created>1596609398466</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1596609398466</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -114,6 +131,11 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Probando pycharm.&#10;Limpio un poco el main" />
+    <MESSAGE value="Probando pycharm.&#10;Limpio un poco el sensors.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Probando pycharm.&#10;Limpio un poco el sensors.py" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="96" y="15" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596555698554">
       <screen x="0" y="0" width="1280" height="720" />
@@ -143,6 +165,10 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="142" y="5" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1596608930700" />
+    <state x="233" y="93" key="Vcs.Push.Dialog.v2" timestamp="1596609405311">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="233" y="93" key="Vcs.Push.Dialog.v2/0.0.1280.720@0.0.1280.720" timestamp="1596609405311" />
     <state x="93" y="93" width="1095" height="535" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1596609284781">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
