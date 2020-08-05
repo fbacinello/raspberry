@@ -2,7 +2,7 @@
 
 import sys
 import logging
-import logger_csv as logger
+import logger_csv
 from datetime import datetime
 from time import sleep
 import display as disp
@@ -40,6 +40,7 @@ LOG = False
 
 def log():
     global LOG
+    logger = logger_csv.Logger()
     while LOG:
         dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
         logger.collect_data(dic)

@@ -5,7 +5,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8813f7a7-bbec-486a-a617-003a06b8c248" name="Default Changelist" comment="Poniendo logger de nuevo">
+    <list default="true" id="8813f7a7-bbec-486a-a617-003a06b8c248" name="Default Changelist" comment="Retarde para la bosta">
       <change beforePath="$PROJECT_DIR$/enviro/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/enviro/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,7 +84,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596641243061</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Retarde para la bosta">
+      <created>1596641410933</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1596641410933</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -140,7 +147,8 @@
     <MESSAGE value="Probando pycharm.&#10;Limpio un poco el main" />
     <MESSAGE value="Probando pycharm.&#10;Limpio un poco el sensors.py" />
     <MESSAGE value="Poniendo logger de nuevo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Poniendo logger de nuevo" />
+    <MESSAGE value="Retarde para la bosta" />
+    <option name="LAST_COMMIT_MESSAGE" value="Retarde para la bosta" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="15" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596555698554">
@@ -171,10 +179,10 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="142" y="5" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1596608930700" />
-    <state x="233" y="93" key="Vcs.Push.Dialog.v2" timestamp="1596641245639">
+    <state x="233" y="93" key="Vcs.Push.Dialog.v2" timestamp="1596641415195">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state x="233" y="93" key="Vcs.Push.Dialog.v2/0.0.1280.720@0.0.1280.720" timestamp="1596641245639" />
+    <state x="233" y="93" key="Vcs.Push.Dialog.v2/0.0.1280.720@0.0.1280.720" timestamp="1596641415195" />
     <state x="93" y="93" width="1095" height="535" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1596609284781">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
