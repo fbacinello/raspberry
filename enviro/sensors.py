@@ -31,7 +31,7 @@ class Sensors:
         # Smooth out with some averaging to decrease jitter
         self.cpu_temps = self.cpu_temps[1:] + [cpu_temp]
         avg_cpu_temp = sum(self.cpu_temps) / float(len(self.cpu_temps))
-        print(avg_cpu_temp)
+        #print(avg_cpu_temp)
         raw_temp = self.bme280.get_temperature()
         raw_data = raw_temp - ((avg_cpu_temp - raw_temp) / self.factor)
         return raw_data
