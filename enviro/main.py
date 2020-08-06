@@ -26,12 +26,12 @@ message = ""
 variables = ["temperature",
              "pressure",
              "humidity",
-             "light"]
+             "noise"]
 
 units = ["C",
          "hPa",
          "%",
-         "Lux"]
+         ""]
 
 values = {}
 
@@ -98,9 +98,13 @@ def main():
                 raw_data = sensor.get_lux()
             else:
                 raw_data = 1
-            save_data(3, raw_data)
+            # save_data(3, raw_data)
+            # display.display_everything(variables, values, units)
+
+            amps = sensor.get_noise_amp()
+            amp20005000 = amps[3]
+            save_data(3, amp20005000)
             display.display_everything(variables, values, units)
-            sensor.get_noise_amp()
 
 
 

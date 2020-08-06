@@ -57,11 +57,8 @@ class Sensors:
         amps = self.noise.get_amplitudes_at_frequency_ranges([
             (100, 200),
             (500, 600),
-            (1000, 1200)
+            (1000, 1200),
+            (2000, 5000)
         ])
-        print('-'*100)
-        print(amps)
-        print('-' * 100)
         amps = [n * 32 for n in amps]
-        print(amps)
-        print('-' * 100)
+        return amps

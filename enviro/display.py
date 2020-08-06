@@ -117,7 +117,6 @@ class Display:
     # Displays all the text on the 0.96" LCD
     def display_everything(self, variables, values, units):
         self.draw.rectangle((0, 0, self.WIDTH, self.HEIGHT), (0, 0, 0))
-        #random_pixel()
         self.circle()
         column_count = 1
         row_count = (len(variables) / column_count)
