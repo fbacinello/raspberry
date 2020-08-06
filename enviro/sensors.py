@@ -1,11 +1,15 @@
 from bme280 import BME280
+
 try:
     # Transitional fix for breaking change in LTR559
     from ltr559 import LTR559
+
     ltr559 = LTR559()
 except ImportError:
     import ltr559
 from subprocess import PIPE, Popen
+from enviroplus.noise import Noise
+
 
 class Sensors:
     def __init__(self):
@@ -13,6 +17,7 @@ class Sensors:
         self.bme280 = BME280()
         # Light sensor
         self.ltr559 = LTR559()
+        self.noise = Noise()
 
         self.cpu_temps = None
         self.factor = 2.15
@@ -24,7 +29,7 @@ class Sensors:
         return float(output[output.index('=') + 1:output.rindex("'")])
 
     def get_temperature(self):
-        if self.cpu_temps == None:
+        if self.cpu_temps is None:
             self.cpu_temps = [self.get_cpu_temperature()] * 5
 
         cpu_temp = self.get_cpu_temperature()
@@ -47,3 +52,16 @@ class Sensors:
 
     def get_proximity(self):
         return self.ltr559.get_proximity()
+
+    def get_noise_amp(self):
+        amps = self.noise.get_amplitudes_at_frequency_ranges([
+            (100, 200),
+            (500, 600),
+            (1000, 1200)
+        ])
+        print('-'*100)
+        print(amps)
+        print('-' * 100)
+        amps = [n * 32 for n in amps]
+        print(amps)
+        print('-' * 100)
