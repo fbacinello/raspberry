@@ -5,8 +5,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8813f7a7-bbec-486a-a617-003a06b8c248" name="Default Changelist" comment="Retarde para la bosta">
-      <change beforePath="$PROJECT_DIR$/enviro/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/enviro/main.py" afterDir="false" />
+    <list default="true" id="8813f7a7-bbec-486a-a617-003a06b8c248" name="Default Changelist" comment="parchando un poco">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,11 +18,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1fdkmc6l4JmR3nSQmMpAx5ctMCs" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
@@ -91,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596641410933</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="parchando un poco">
+      <created>1596641621163</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1596641621164</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -144,11 +156,13 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Probando pycharm.&#10;Limpio un poco el main" />
     <MESSAGE value="Probando pycharm.&#10;Limpio un poco el sensors.py" />
     <MESSAGE value="Poniendo logger de nuevo" />
     <MESSAGE value="Retarde para la bosta" />
-    <option name="LAST_COMMIT_MESSAGE" value="Retarde para la bosta" />
+    <MESSAGE value="parchando un poco" />
+    <option name="LAST_COMMIT_MESSAGE" value="parchando un poco" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="15" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596555698554">
@@ -179,10 +193,10 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="142" y="5" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1596608930700" />
-    <state x="233" y="93" key="Vcs.Push.Dialog.v2" timestamp="1596641415195">
+    <state x="233" y="93" key="Vcs.Push.Dialog.v2" timestamp="1596641623259">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state x="233" y="93" key="Vcs.Push.Dialog.v2/0.0.1280.720@0.0.1280.720" timestamp="1596641415195" />
+    <state x="233" y="93" key="Vcs.Push.Dialog.v2/0.0.1280.720@0.0.1280.720" timestamp="1596641623259" />
     <state x="93" y="93" width="1095" height="535" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1596609284781">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
