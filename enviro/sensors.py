@@ -58,7 +58,7 @@ class Sensors:
             (100, 200),
             (500, 600),
             (1000, 1200),
-            (2000, 5000)
+            (2000, 3000)
         ])
         amps = [n * 32 for n in amps]
         return amps
