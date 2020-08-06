@@ -54,7 +54,7 @@ def retardar_logger():
     print("-" * 100)
     print("A MIMIRRRRRRRRRRRRRRRRRRR")
     print("-" * 100)
-    sleep(30)
+    #sleep(30)
     LOG = True
     t_logger = threading.Thread(target=log)
     t_logger.start()
@@ -100,6 +100,9 @@ def main():
                 raw_data = 1
             save_data(3, raw_data)
             display.display_everything(variables, values, units)
+            sensor.get_noise_amp()
+
+
 
     # Exit cleanly
     except KeyboardInterrupt:
