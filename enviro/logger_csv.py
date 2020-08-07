@@ -1,6 +1,6 @@
 import csv
 from datetime import datetime
-from time import sleep
+import os
 
 
 class Logger:
@@ -9,7 +9,7 @@ class Logger:
 
     def collect_data(self, data):
         """collect data and assign to class variable"""
-        self.data_dict['enviro aire power'] = data
+        self.data_dict['enviro'] = data
 
     def print_data(self):
         """print selected data in nicely formatted string"""
@@ -18,10 +18,15 @@ class Logger:
 
     def log_data(self):
         """log data into csv file"""
+        path = '/data/enviro' + datetime.now().strftime('%d_%m_%Y') + ".csv"
+        if not os.path.isfile(path):
+            with open(path, 'a+', newline='') as f:
+                writer = csv.DictWriter(f, fieldnames=self.data_dict['enviro'].keys())
+                writer.writeheader()
+
         for file, data in self.data_dict.items():
             with open('data/' + file + ".csv", 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
-                # writer.writeheader()
                 writer.writerow(data)
 
 

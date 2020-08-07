@@ -37,25 +37,28 @@ values = {}
 
 # Logger
 LOG = False
+DELAY_LOG = 0
+TIME_BETWEEN_LOGS = 60
+
 
 def log():
-    global LOG
+    global TIME_BETWEEN_LOGS
     logger = logger_csv.Logger()
-    while LOG:
+    i = 1
+    while True:
         dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
         logger.collect_data(dic)
         logger.log_data()
-        print("Logging")
-        sleep(60)
+        print("Logging " + str(i))
+        i += 1
+        sleep(TIME_BETWEEN_LOGS)
 
 
-def retardar_logger():
-    global LOG
+def retardar_logger(start=0):
     print("-" * 100)
     print("A MIMIRRRRRRRRRRRRRRRRRRR")
     print("-" * 100)
-    #sleep(30)
-    LOG = True
+    sleep(start)
     t_logger = threading.Thread(target=log)
     t_logger.start()
 
@@ -74,8 +77,9 @@ def main():
     sensor = sensors.Sensors()
     display = disp.Display()
 
-    t_logger = threading.Thread(target=retardar_logger)
-    t_logger.start()
+    if LOG:
+        t_logger = threading.Thread(target=retardar_logger(DELAY_LOG))
+        t_logger.start()
 
     for v in variables:
         values[v] = [1] * 160
