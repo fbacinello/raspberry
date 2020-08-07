@@ -7,9 +7,9 @@ class Logger:
     def __init__(self):
         self.data_dict = {}
 
-    def collect_data(self, data):
+    def collect_data(self, source, data):
         """collect data and assign to class variable"""
-        self.data_dict['enviro'] = data
+        self.data_dict[source] = data
 
     def print_data(self):
         """print selected data in nicely formatted string"""
@@ -18,16 +18,19 @@ class Logger:
 
     def log_data(self):
         """log data into csv file"""
-        path = 'data/enviro' + datetime.now().strftime('%d_%m_%Y') + ".csv"
-        if not os.path.isfile(path):
-            with open(path, 'a+', newline='') as f:
-                writer = csv.DictWriter(f, fieldnames=self.data_dict['enviro'].keys())
-                writer.writeheader()
 
         for file, data in self.data_dict.items():
+            path = "data/" + file + datetime.now().strftime('%d_%m_%Y') + ".csv"
+            self.file_exist(file, path)
             with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
                 writer.writerow(data)
+
+    def file_exist(self, source, path):
+        if not os.path.isfile(path):
+            with open(path, 'a+', newline='') as f:
+                writer = csv.DictWriter(f, fieldnames=self.data_dict[source].keys())
+                writer.writeheader()
 
 
 def main():

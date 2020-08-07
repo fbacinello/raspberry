@@ -26,24 +26,33 @@ message = ""
 variables = ["temperature",
              "pressure",
              "humidity",
-             "light"]
+             "light",
+             "noise"]
 
 units = ["C",
          "hPa",
          "%",
-         "Lux"]
+         "Lux",
+         "*"]
 
 values = {}
 
 # Logger
 LOG = False
 
+
 def log():
     global LOG
     logger = logger_csv.Logger()
     while LOG:
-        dic = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
-        logger.collect_data(dic)
+        dic_enviro = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
+        logger.collect_data('enviro', dic_enviro)
+
+        data = values['noise'][-1]
+        dic_noise = {'time': datetime.now(), '100-200': data[0], '500-600': data[1],
+                     '1000-1200': data[2], '2000-3000': data[3]}
+        logger.collect_data('noise', dic_noise)
+
         logger.log_data()
         print("Logging")
         sleep(60)
@@ -86,20 +95,24 @@ def main():
             # Everything on one screen
             raw_data = sensor.get_temperature()
             save_data(0, raw_data)
+
             display.display_everything(variables, values, units)
             raw_data = sensor.get_pressure()
             save_data(1, raw_data)
+
             display.display_everything(variables, values, units)
-            # if LOG:
-            #     log()
             raw_data = sensor.get_humidity()
             save_data(2, raw_data)
+
             if sensor.get_proximity() < 10:
                 raw_data = sensor.get_lux()
             else:
                 raw_data = 1
             save_data(3, raw_data)
             display.display_everything(variables, values, units)
+
+            raw_data = sensor.get_noise_amp()
+            save_data(4, raw_data)
 
 
 
