@@ -26,14 +26,14 @@ message = ""
 variables = ["temperature",
              "pressure",
              "humidity",
-             "light",
-             "noise"]
+             "light"]
 
 units = ["C",
          "hPa",
          "%",
-         "Lux",
-         "*"]
+         "Lux"]
+
+noise = [0, 0, 0, 0]
 
 values = {}
 
@@ -48,9 +48,8 @@ def log():
         dic_enviro = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
         logger.collect_data('enviro', dic_enviro)
 
-        data = values['noise'][-1]
-        dic_noise = {'time': datetime.now(), '100-200': data[0], '500-600': data[1],
-                     '1000-1200': data[2], '2000-3000': data[3]}
+        dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
+                     '1000-1200': noise[2], '2000-3000': noise[3]}
         logger.collect_data('noise', dic_noise)
 
         logger.log_data()
@@ -80,6 +79,7 @@ def save_data(idx, data):
 
 
 def main():
+    global noise
     sensor = sensors.Sensors()
     display = disp.Display()
 
@@ -111,9 +111,7 @@ def main():
             save_data(3, raw_data)
             display.display_everything(variables, values, units)
 
-            raw_data = sensor.get_noise_amp()
-            save_data(4, raw_data)
-
+            noise = sensor.get_noise_amp()
 
 
     # Exit cleanly
