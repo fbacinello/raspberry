@@ -18,14 +18,14 @@ class Logger:
 
     def log_data(self):
         """log data into csv file"""
-        path = '/data/enviro' + datetime.now().strftime('%d_%m_%Y') + ".csv"
+        path = 'data/enviro' + datetime.now().strftime('%d_%m_%Y') + ".csv"
         if not os.path.isfile(path):
             with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=self.data_dict['enviro'].keys())
                 writer.writeheader()
 
         for file, data in self.data_dict.items():
-            with open('data/' + file + ".csv", 'a+', newline='') as f:
+            with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
                 writer.writerow(data)
 
