@@ -8,6 +8,7 @@ from time import sleep
 import display as disp
 import sensors
 import threading
+import numpy as np
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -79,7 +80,7 @@ def retardar_logger():
 def save_data(idx, data):
     variable = variables[idx]
     # Maintain length of list
-    values[variable] = values[variable][1:] + [data]
+    values[variable] = np.append(values[variable][1:],[data])
     unit = units[idx]
     # message = "{}: {:.1f} {}".format(variable[:4], data, unit)
     # logging.info(message)
@@ -94,7 +95,7 @@ def main():
     t_logger.start()
 
     for v in variables:
-        values[v] = [1] * 160
+        values[v] = np.ones(160)
 
     noise = noise*60
 
