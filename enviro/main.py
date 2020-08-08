@@ -33,7 +33,7 @@ units = ["C",
          "%",
          "Lux"]
 
-noise = [0, 0, 0, 0]
+noise = [[0, 0, 0, 0]]
 
 values = {}
 
@@ -45,12 +45,19 @@ def log():
     global LOG
     logger = logger_csv.Logger()
     while LOG:
-        dic_enviro = {'time': datetime.now(), 'temp': values['temperature'][-1], 'humi': values['humidity'][-1]}
-        logger.collect_data('enviro', dic_enviro)
+        dic_enviro = {'time': datetime.now(),
+                      'temp': values['temperature'][-1],
+                      'humi': values['humidity'][-1]}
+        logger.collect_data('enviro_not_suav', dic_enviro)
 
-        dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
-                     '1000-1200': noise[2], '2000-3000': noise[3]}
-        logger.collect_data('noise', dic_noise)
+        dic_enviro_suav = {'time': datetime.now(),
+                           'temp': values['temperature'][-60:].mean(),
+                           'humi': values['humidity'][-60:].mean()}
+        logger.collect_data('dic_enviro_suav', dic_enviro_suav)
+
+        # dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
+        #             '1000-1200': noise[2], '2000-3000': noise[3]}
+        # logger.collect_data('noise', dic_noise)
 
         logger.log_data()
         print("Logging")
@@ -89,6 +96,8 @@ def main():
     for v in variables:
         values[v] = [1] * 160
 
+    noise = noise*60
+
     # The main loop
     try:
         while True:
@@ -111,7 +120,7 @@ def main():
             save_data(3, raw_data)
             display.display_everything(variables, values, units)
 
-            noise = sensor.get_noise_amp()
+            #noise = sensor.get_noise_amp()
 
 
     # Exit cleanly
