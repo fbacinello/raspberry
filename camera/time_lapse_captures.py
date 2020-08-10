@@ -8,9 +8,9 @@ camera.resolution = (2592, 1944)
 
 
 def preview(folder=DEFAULT_FOLDER):
-    name = "preview " + fecha_formateada() + ".jpg"
-    camera.capture(folder + name)
-    camera.close()
+    with camera as cam:
+        name = "preview " + fecha_formateada() + ".jpg"
+        cam.capture(folder + name)
 
 
 def calcular_tiempo_time_lapse(cant_fotos, tiempo_entre_foto):
@@ -36,13 +36,13 @@ def start_preview(time=5):
 
 
 def record(time=5, folder=DEFAULT_FOLDER):
-    camera.resolution = (1920, 1080)
-    camera.start_preview()
-    camera.start_recording(folder + 'video' + fecha_formateada() + '.h264')
-    sleep(time)
-    camera.stop_recording()
-    camera.stop_preview()
-    camera.close()
+    with camera as cam:
+        cam.resolution = (1920, 1080)
+        cam.start_preview()
+        cam.start_recording(folder + 'video' + fecha_formateada() + '.h264')
+        sleep(time)
+        cam.stop_recording()
+        cam.stop_preview()
 
 
 def show_effects(time=2):
