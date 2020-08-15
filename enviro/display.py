@@ -3,12 +3,15 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 from fonts.ttf import RobotoMedium as UserFont
+from random import randint
+import colorsys
+
 
 class Display:
-    def __init__(self, rotation = 90):
+    def __init__(self, rotation=90):
         self.r = 8
         self.creciendo = False
-            # Create ST7735 LCD display class
+        # Create ST7735 LCD display class
         self.st7735 = ST7735.ST7735(
             port=0,
             cs=1,
@@ -31,7 +34,7 @@ class Display:
         font_size_small = 10
         font_size_large = 15
         self.font = ImageFont.truetype(UserFont, font_size_large)
-        selfsmallfont = ImageFont.truetype(UserFont, font_size_small)
+        self.selfsmallfont = ImageFont.truetype(UserFont, font_size_small)
         self.x_offset = 1
         self.y_offset = 1
 
@@ -49,29 +52,28 @@ class Display:
         # NO RESPONSIBILITY if reliance on the following values or this
         # code in general leads to ANY DAMAGES or DEATH.
         self.limits = [[4, 18, 28, 35],
-                  [250, 650, 1013.25, 1015],
-                  [20, 30, 60, 70],
-                  [-1, -1, 30000, 100000]]
+                       [250, 650, 1013.25, 1015],
+                       [20, 30, 60, 70],
+                       [-1, -1, 30000, 100000]]
 
         # RGB palette for values on the combined screen
-        self.palette = [(0, 0, 255),           # Dangerously Low
-                   (0, 255, 255),         # Low
-                   (0, 255, 0),           # Normal
-                   (255, 255, 0),         # High
-                   (255, 0, 0)]           # Dangerously High
+        self.palette = [(0, 0, 255),  # Dangerously Low
+                        (0, 255, 255),  # Low
+                        (0, 255, 0),  # Normal
+                        (255, 255, 0),  # High
+                        (255, 0, 0)]  # Dangerously High
 
         # The position of the top bar
-        top_pos = 25
+        self.top_pos = 25
 
     def random_pixel(self):
-        global img
-        global WIDTH
-        global HEIGHT
-        img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
-        img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
-        img.putpixel((randint(0, WIDTH -1),randint(0,HEIGHT -1)), (randint(0,255),randint(0,255),randint(0,255)))
+        self.img.putpixel((randint(0, self.WIDTH - 1), randint(0, self.HEIGHT - 1)),
+                          (randint(0, 255), randint(0, 255), randint(0, 255)))
+        self.img.putpixel((randint(0, self.WIDTH - 1), randint(0, self.HEIGHT - 1)),
+                          (randint(0, 255), randint(0, 255), randint(0, 255)))
+        self.img.putpixel((randint(0, self.WIDTH - 1), randint(0, self.HEIGHT - 1)),
+                          (randint(0, 255), randint(0, 255), randint(0, 255)))
 
-    
     def circle(self):
         if self.creciendo:
             self.r = self.r + 1
@@ -79,10 +81,10 @@ class Display:
             self.r = self.r - 1
 
         self.draw.rectangle((140, 0, 160, 20), (0, 0, 0))
-        leftUpPoint = (150-self.r, 10-self.r)
-        rightDownPoint = (150+self.r, 10+self.r)
-        twoPointList = [leftUpPoint, rightDownPoint]
-        self.draw.ellipse(twoPointList, fill=(255,0,0,255))
+        left_up_point = (150 - self.r, 10 - self.r)
+        right_down_point = (150 + self.r, 10 + self.r)
+        two_point_list = [left_up_point, right_down_point]
+        self.draw.ellipse(two_point_list, fill=(255, 0, 0, 255))
 
         if self.r == 0:
             self.creciendo = True
@@ -90,7 +92,7 @@ class Display:
             self.creciendo = False
 
     # Displays data and text on the 0.96" LCD
-    def display_text(self, variable, data, unit):
+    def display_text(self, variable, values, data, unit):
         # Maintain length of list
         values[variable] = values[variable][1:] + [data]
         # Scale the values for the variable between 0 and 1
@@ -99,20 +101,20 @@ class Display:
         colours = [(v - vmin + 1) / (vmax - vmin + 1) for v in values[variable]]
         # Format the variable name and value
         message = "{}: {:.1f} {}".format(variable[:4], data, unit)
-        logging.info(message)
-        draw.rectangle((0, 0, WIDTH, HEIGHT), (255, 255, 255))
+        # logging.info(message)
+        self.draw.rectangle((0, 0, self.WIDTH, self.HEIGHT), (255, 255, 255))
         for i in range(len(colours)):
             # Convert the values to colours from red to blue
             colour = (1.0 - colours[i]) * 0.6
             r, g, b = [int(x * 255.0) for x in colorsys.hsv_to_rgb(colour, 1.0, 1.0)]
             # Draw a 1-pixel wide rectangle of colour
-            draw.rectangle((i, top_pos, i + 1, HEIGHT), (r, g, b))
+            self.draw.rectangle((i, self.top_pos, i + 1, self.HEIGHT), (r, g, b))
             # Draw a line graph in black
-            line_y = HEIGHT - (top_pos + (colours[i] * (HEIGHT - top_pos))) + top_pos
-            draw.rectangle((i, line_y, i + 1, line_y + 1), (0, 0, 0))
+            line_y = self.HEIGHT - (self.top_pos + (colours[i] * (self.HEIGHT - self.top_pos))) + self.top_pos
+            self.draw.rectangle((i, line_y, i + 1, line_y + 1), (0, 0, 0))
         # Write the text at the top in black
-        draw.text((0, 0), message, font=font, fill=(0, 0, 0))
-        st7735.display(img)
+        self.draw.text((0, 0), message, font=self.font, fill=(0, 0, 0))
+        self.st7735.display(self.img)
 
     # Displays all the text on the 0.96" LCD
     def display_everything(self, variables, values, units):

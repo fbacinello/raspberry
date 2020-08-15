@@ -80,7 +80,7 @@ def retardar_logger():
 def save_data(idx, data):
     variable = variables[idx]
     # Maintain length of list
-    values[variable] = np.append(values[variable][1:],[data])
+    values[variable] = np.append(values[variable][1:], [data])
     unit = units[idx]
     # message = "{}: {:.1f} {}".format(variable[:4], data, unit)
     # logging.info(message)
@@ -106,11 +106,9 @@ def main():
             raw_data = sensor.get_temperature()
             save_data(0, raw_data)
 
-            display.display_everything(variables, values, units)
             raw_data = sensor.get_pressure()
             save_data(1, raw_data)
 
-            display.display_everything(variables, values, units)
             raw_data = sensor.get_humidity()
             save_data(2, raw_data)
 
