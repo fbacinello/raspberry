@@ -17,11 +17,10 @@ class Display:
             cs=1,
             dc=9,
             backlight=12,
-            rotation=90,
+            rotation=rotation,
             spi_speed_hz=10000000
         )
 
-        self.st7735.rotation = rotation
         # Initialize display
         self.st7735.begin()
 
