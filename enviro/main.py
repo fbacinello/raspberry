@@ -89,7 +89,7 @@ def save_data(idx, data):
 def main():
     global noise
     sensor = sensors.Sensors()
-    display = disp.Display()
+    display = disp.Display(rotation=270)
 
     t_logger = threading.Thread(target=retardar_logger)
     t_logger.start()

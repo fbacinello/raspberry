@@ -20,7 +20,7 @@ class Sensors:
         self.noise = Noise()
 
         self.cpu_temps = None
-        self.factor = 2.15
+        self.factor = 2.25
 
     # Get the temperature of the CPU for compensation
     def get_cpu_temperature(self):
