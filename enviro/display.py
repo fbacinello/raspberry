@@ -140,7 +140,7 @@ class Display:
         self.st7735.set_backlight(value)
 
     def turn_off(self):
-        self.st7735.set_backlight(None)
+        self.st7735.set_backlight(0)
 
     def turn_on(self):
         self.st7735.set_backlight(12)

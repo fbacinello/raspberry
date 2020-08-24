@@ -134,7 +134,6 @@ def main():
             raw_data = sensor.get_humidity()
             save_data(2, raw_data)
 
-            print('proximidad: ', sensor.get_proximity())
             if sensor.get_proximity() < 10:
                 raw_data = sensor.get_lux()
             else:
