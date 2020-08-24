@@ -41,7 +41,6 @@ values = {}
 # Logger
 LOG = False
 
-
 def log():
     global LOG
     logger = logger_csv.Logger()
@@ -90,6 +89,7 @@ def main():
     global noise
     sensor = sensors.Sensors()
     display = disp.Display(rotation=270)
+    disp_bandera = False
 
     t_logger = threading.Thread(target=retardar_logger)
     t_logger.start()
@@ -112,6 +112,7 @@ def main():
             raw_data = sensor.get_humidity()
             save_data(2, raw_data)
 
+            print('proximidad: ', sensor.get_proximity())
             if sensor.get_proximity() < 10:
                 raw_data = sensor.get_lux()
             else:

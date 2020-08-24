@@ -135,3 +135,12 @@ class Display:
                     rgb = self.palette[j + 1]
             self.draw.text((x, y), message, font=self.font, fill=rgb)
         self.st7735.display(self.img)
+
+    def set_backlight(self, value):
+        self.st7735.set_backlight(value)
+
+    def turn_off(self):
+        self.st7735.set_backlight(None)
+
+    def turn_on(self):
+        self.st7735.set_backlight(12)
