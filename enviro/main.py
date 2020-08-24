@@ -9,6 +9,7 @@ import display as disp
 import sensors
 import threading
 import numpy as np
+from time import time
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -99,9 +100,30 @@ def main():
 
     noise = noise*60
 
+    delay = 0.5  # Debounce the proximity tap
+    ultimo_toque = 0
+    display_prendido = True
+    apagar_display = False
+
     # The main loop
     try:
         while True:
+            proximity = sensors.get_proximity()
+
+            if proximity > 1500 and time.time() - ultimo_toque > delay:
+                ultimo_toque = time.time()
+                apagar_display = not apagar_display
+
+            if display_prendido and apagar_display:
+                display.turn_off()
+                display_prendido = False
+
+            if not display_prendido and not apagar_display:
+                display.turn_on()
+                display_prendido = True
+
+
+
             # Everything on one screen
             raw_data = sensor.get_temperature()
             save_data(0, raw_data)
