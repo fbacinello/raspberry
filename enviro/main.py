@@ -9,7 +9,7 @@ import display as disp
 import sensors
 import threading
 import numpy as np
-from time import time
+import time
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
@@ -108,7 +108,7 @@ def main():
     # The main loop
     try:
         while True:
-            proximity = sensors.get_proximity()
+            proximity = sensor.get_proximity()
 
             if proximity > 1500 and time.time() - ultimo_toque > delay:
                 ultimo_toque = time.time()
