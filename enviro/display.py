@@ -9,8 +9,14 @@ import colorsys
 
 class Display:
     def __init__(self, rotation=90):
+        # parametros para apagar y prender la pantalla
+        self.display_prendido = True
+        self.apagar_display = False
+
+        # estos dos parametros son para el circulo rojo
         self.r = 8
         self.creciendo = False
+
         # Create ST7735 LCD display class
         self.st7735 = ST7735.ST7735(
             port=0,
@@ -144,3 +150,14 @@ class Display:
 
     def turn_on(self):
         self.st7735.set_backlight(12)
+
+    def prender_apagar(self):
+        self.apagar_display = not self.apagar_display
+
+        if self.display_prendido and self.apagar_display:
+            self.turn_off()
+            self.display_prendido = False
+
+        if not self.display_prendido and not self.apagar_display:
+            self.turn_on()
+            self.display_prendido = True

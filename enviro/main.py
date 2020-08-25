@@ -90,7 +90,6 @@ def main():
     global noise
     sensor = sensors.Sensors()
     display = disp.Display(rotation=270)
-    disp_bandera = False
 
     t_logger = threading.Thread(target=retardar_logger)
     t_logger.start()
@@ -101,9 +100,7 @@ def main():
     noise = noise*60
 
     delay = 0.5  # Debounce the proximity tap
-    ultimo_toque = 0
-    display_prendido = True
-    apagar_display = False
+    ultimo_toque = 0  # cuando se hizo el ultimo toque
 
     # The main loop
     try:
@@ -112,17 +109,7 @@ def main():
 
             if proximity > 1500 and time.time() - ultimo_toque > delay:
                 ultimo_toque = time.time()
-                apagar_display = not apagar_display
-
-            if display_prendido and apagar_display:
-                display.turn_off()
-                display_prendido = False
-
-            if not display_prendido and not apagar_display:
-                display.turn_on()
-                display_prendido = True
-
-
+                display.prender_apagar()
 
             # Everything on one screen
             raw_data = sensor.get_temperature()
