@@ -6,7 +6,8 @@ TIEMPO_ENTRE_FOTO = 1
 FOLDER = "/home/pi/Desktop/"
 
 if PREVIEW:
-    cam.preview(FOLDER)
+    cam.start_preview()
+    
 # cam.record()
 else:
     tiempo = cam.calcular_tiempo_time_lapse(CANT_FOTOS, TIEMPO_ENTRE_FOTO)
