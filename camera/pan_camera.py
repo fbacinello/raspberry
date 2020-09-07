@@ -36,16 +36,20 @@ time.sleep(0.5)
 
 for i in range(-90,-30,1):
     mover_tilt(i)
+time.sleep(0.25)
 
 for i in range(-90,0, 1):
     mover_pan(i)
     POS = i
+time.sleep(0.25)
         
 for i in range(0,-90, -1):
     mover_pan(i)
     POS = i
+time.sleep(0.25)
 
 for i in range(-30, -90, -1):
     mover_tilt(i)
+time.sleep(0.25)
 
 cam_stop()
