@@ -5,6 +5,7 @@ import datetime
 DEFAULT_FOLDER = "/home/pi/Desktop/"
 camera = PiCamera()
 camera.resolution = (2592, 1944)
+camera.rotation = 180
 
 
 def preview(folder=DEFAULT_FOLDER):
@@ -32,8 +33,12 @@ def start_preview(time=5):
     camera.resolution = (1920, 1080)
     camera.start_preview()
     sleep(time)
-    camera.stop_preview()
+    if not time == 0:
+        camera.stop_preview()
 
+def stop_preview():
+    camera.stop_preview()
+    camera.close()
 
 def record(time=5, folder=DEFAULT_FOLDER):
     with camera as cam:
