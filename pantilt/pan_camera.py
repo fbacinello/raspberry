@@ -3,7 +3,10 @@ import time
 import pantilthat
 import sys
 import time_lapse_captures as cam
+# import ../camera/time_lapse_captures as cam
+# https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 import threading
+
 
 def mover(i):
     a = int(i)
