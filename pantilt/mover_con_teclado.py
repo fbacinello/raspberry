@@ -6,9 +6,12 @@ import time_lapse_captures as cam
 import threading
 import keyboard
 
+pos_tilt = -90
+pos_pan = -90
+bandera = True
 
-def cam_preview():
-    cam.start_preview(0)
+def cam_preview(start = 0):
+    cam.start_preview(start)
 
 
 def cam_stop():
@@ -31,45 +34,55 @@ def mover_tilt(i):
 
 def mover_horizontal(direccion):
     global pos_pan
-    if direccion == 'left' and pos_pan >= -90:
+    if direccion == 'left' and pos_pan > -90:
         pos_pan -= 1
-    if direccion == 'right' and pos_pan <= 90:
+    if direccion == 'right' and pos_pan < 90:
         pos_pan += 1
+    mover_pan(pos_pan)    
 
 
 def mover_vertical(direccion):
     global pos_tilt
-    if direccion == 'up' and pos_tilt >= -90:
-        pos_tilt -= 1
-    if direccion == 'down' and pos_tilt <= 90:
+    if direccion == 'up' and pos_tilt > -90:
+        pos_tilt -= 1        
+    if direccion == 'down' and pos_tilt < 90:
         pos_tilt += 1
+    mover_tilt(pos_tilt)
+
+def volver_posicion():
+    print('volverpos')
+    global pos_tilt
+    for i in range(-90, pos_tilt, -1):
+        mover_tilt(i)
+    global pos_pan
+    for i in range(-90, pos_pan, -1):
+        mover_pan(i)
 
 
 def on_press_handler(event):
-    dire = event.name
+    key = event.name
     print(event.name)
-    if dire in ('left', 'right'):
-        mover_horizontal(dire)
-    if dire in ('up', 'down'):
-        mover_vertical(dire)
+    if key in ('left', 'right'):
+        mover_horizontal(key)
+    if key in ('up', 'down'):
+        mover_vertical(key)
+    if key == 'esc':
+        global bandera
+        bandera = False
+        print('esc')
+        volver_posicion()
 
 
-for i in range(90, -90, -1):
-    mover_pan(i)
-
-for i in range(90, -90, -1):
-    mover_tilt(i)
 
 keyboard.on_press(on_press_handler)
 
-x = threading.Thread(target=cam_preview)
+x = threading.Thread(target=cam_preview, args = [15])
 x.start()
 time.sleep(0.5)
 
-pos_tilt = -90
-pos_pan = -90
 
-while True:
+while bandera:
     pass
 
+volver_posicion()
 
