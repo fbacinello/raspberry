@@ -9,8 +9,11 @@ import keyboard
 pos_tilt = -90
 pos_pan = -90
 bandera = True
+speed = 0.05
+last_touch = 0
 
-def cam_preview(start = 0):
+
+def cam_preview(start=0):
     cam.start_preview(start)
 
 
@@ -22,14 +25,14 @@ def mover_pan(i):
     a = int(i)
 
     pantilthat.pan(a)
-    time.sleep(0.05)
+    time.sleep(speed)
 
 
 def mover_tilt(i):
     a = int(i)
 
     pantilthat.tilt(a)
-    time.sleep(0.05)
+    time.sleep(speed)
 
 
 def mover_horizontal(direccion):
@@ -52,16 +55,25 @@ def mover_vertical(direccion):
 def volver_posicion():
     print('volverpos')
     global pos_tilt
-    for i in range(-90, pos_tilt, -1):
+    for i in range(pos_tilt, -90, -1):
         mover_tilt(i)
     global pos_pan
-    for i in range(-90, pos_pan, -1):
+    for i in range(pos_pan, -90, -1):
         mover_pan(i)
 
 
 def on_press_handler(event):
+    timestamp = event.time
+    global last_touch
+    global speed
+    if not time.time() - last_touch > speed:
+        pass
+    last_touch = time.time()
+    print(timestamp)
+
     key = event.name
-    print(event.name)
+    print(key)
+
     if key in ('left', 'right'):
         mover_horizontal(key)
     if key in ('up', 'down'):
@@ -73,10 +85,9 @@ def on_press_handler(event):
         volver_posicion()
 
 
-
 keyboard.on_press(on_press_handler)
 
-x = threading.Thread(target=cam_preview, args = [15])
+x = threading.Thread(target=cam_preview, args=[15])
 x.start()
 time.sleep(0.5)
 
