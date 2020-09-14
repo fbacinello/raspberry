@@ -11,7 +11,7 @@ pos_pan = -90
 bandera = True
 delay = 0
 last_touch = 0
-speed = 2
+speed = 4
 
 
 def cam_preview(start=0):
@@ -22,18 +22,13 @@ def cam_stop():
     cam.stop_preview()
 
 
-def mover_pan(i):
-    a = int(i)
-
-    pantilthat.pan(a)
-    time.sleep(delay)
+def mover_pan(i):    
+    pantilthat.pan(int(i))
+    
 
 
-def mover_tilt(i):
-    a = int(i)
-
-    pantilthat.tilt(a)
-    time.sleep(delay)
+def mover_tilt(i):    
+    pantilthat.tilt(int(i))    
 
 
 def mover_horizontal(direccion):
@@ -56,15 +51,16 @@ def mover_vertical(direccion):
     mover_tilt(pos_tilt)
 
 
-def volver_posicion():
-    print('volverpos')
+def volver_posicion():    
     global pos_tilt
     for i in range(pos_tilt, -90, -1):
         time.sleep(0.01)
+        pos_tilt = i
         mover_tilt(i)
     global pos_pan
     for i in range(pos_pan, -90, -1):
         time.sleep(0.01)
+        pos_pan = i
         mover_pan(i)
 
 
@@ -79,22 +75,23 @@ def on_press_handler(event):
     global last_touch
     global delay
     if not timestamp - last_touch > delay:
+        print('muy rapido')
         pass
-    last_touch = time.time()
+    else:
+        last_touch = timestamp
     
 
-    key = event.name
-    if key in ('left', 'right'):
-        mover_horizontal(key)
-    if key in ('up', 'down'):
-        mover_vertical(key)
-    if key == 'esc':
-        global bandera
-        bandera = False
-        print('esc')
-        volver_posicion()
+        key = event.name
+        if key in ('left', 'right'):
+            mover_horizontal(key)
+        if key in ('up', 'down'):
+            mover_vertical(key)
+        if key == 'esc':
+            global bandera
+            bandera = False        
+            volver_posicion()
     
-    log()
+        log()
 
 
 
@@ -109,5 +106,5 @@ time.sleep(0.5)
 while bandera:
     pass
 
-volver_posicion()
+
 
