@@ -5,11 +5,11 @@ import time_lapse_captures as cam
 # https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 import threading
 import keyboard
-
+22
 pos_tilt = -90
 pos_pan = -90
 bandera = True
-delay = 0
+delay = 0.1
 last_touch = 0
 speed = 4
 
