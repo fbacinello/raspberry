@@ -5,7 +5,8 @@ import time_lapse_captures as cam
 # https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 import threading
 import keyboard
-22
+import sys
+
 pos_tilt = -90
 pos_pan = -90
 bandera = True
@@ -90,6 +91,7 @@ def on_press_handler(event):
             global bandera
             bandera = False        
             volver_posicion()
+            sys.exit()
     
         log()
 
