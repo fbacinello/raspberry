@@ -48,13 +48,15 @@ def log():
     while LOG:
         dic_enviro = {'time': datetime.now(),
                       'temp': values['temperature'][-1],
-                      'humi': values['humidity'][-1]}
-        logger.collect_data('enviro_not_suav', dic_enviro)
+                      'humi': values['humidity'][-1],
+                      'pres': values['pressure'][-1]}
+        logger.collect_data('enviro_not_suav_pres', dic_enviro)
 
         dic_enviro_suav = {'time': datetime.now(),
                            'temp': values['temperature'][-60:].mean(),
-                           'humi': values['humidity'][-60:].mean()}
-        logger.collect_data('dic_enviro_suav', dic_enviro_suav)
+                           'humi': values['humidity'][-60:].mean(),
+                           'pres': values['pressure'][-60:].mean()}
+        logger.collect_data('dic_enviro_suav_pres', dic_enviro_suav)
 
         # dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
         #             '1000-1200': noise[2], '2000-3000': noise[3]}
