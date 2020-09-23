@@ -168,7 +168,8 @@ class Display:
 
     def luminocidad(self, lux):
         for j in range(len(self.escalas)):
-            if lux > self.escalas[j]:
+            if lux >= self.escalas[j]:
                 lum = self.intencidad[j + 1]
                 self.set_backlight(lum)
                 print(lum)
+
