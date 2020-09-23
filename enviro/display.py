@@ -72,7 +72,7 @@ class Display:
         self.top_pos = 25
 
         # Parametros lucinocidad
-        self.escalas = [0, 10]
+        self.escalas = [0.5, 0, 10]
         self.intencidad = [0, 4, 12]
 
     def random_pixel(self):
@@ -171,5 +171,6 @@ class Display:
             if lux >= self.escalas[j]:
                 lum = self.intencidad[j + 1]
                 self.set_backlight(lum)
-                print(lum)
+                print('escala', lum)
+                print('lux', lux)
 
