@@ -72,7 +72,7 @@ class Display:
         self.top_pos = 25
 
         # Parametros lucinocidad
-        self.escalas = [0, 0.5, 10]
+        self.escalas = [0, 0, 0.5, 10]
         self.intencidad = [0, 4, 12, 12]
 
     def random_pixel(self):
