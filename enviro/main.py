@@ -129,7 +129,7 @@ def main():
                 raw_data = 1
             save_data(3, raw_data)
             display.display_everything(variables, values, units)
-            display.luminocidad()
+            display.luminocidad(sensor.get_lux())
 
             #noise = sensor.get_noise_amp()
 

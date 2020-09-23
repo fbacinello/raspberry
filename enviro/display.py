@@ -171,3 +171,4 @@ class Display:
             if lux > self.escalas[j]:
                 lum = self.intencidad[j + 1]
                 self.set_backlight(lum)
+                print(lum)
