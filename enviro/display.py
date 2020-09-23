@@ -71,6 +71,10 @@ class Display:
         # The position of the top bar
         self.top_pos = 25
 
+        # Parametros lucinocidad
+        self.escalas = [0, 10]
+        self.intencidad = [0, 4, 12]
+
     def random_pixel(self):
         self.img.putpixel((randint(0, self.WIDTH - 1), randint(0, self.HEIGHT - 1)),
                           (randint(0, 255), randint(0, 255), randint(0, 255)))
@@ -161,3 +165,9 @@ class Display:
         if not self.display_prendido and not self.apagar_display:
             self.turn_on()
             self.display_prendido = True
+
+    def luminocidad(self, lux):
+        for j in range(len(self.escalas)):
+            if lux > self.escalas[j]:
+                lum = self.intencidad[j + 1]
+                self.set_backlight(lum)
