@@ -167,8 +167,7 @@ class Display:
             self.display_prendido = True
 
     def luminocidad(self, lux):
-        print(lux)
-        if lux > 0.3:
+        if lux > 0.1:
             self.set_backlight(12)
         else:
             self.turn_off()
