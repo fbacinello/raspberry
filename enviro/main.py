@@ -88,7 +88,7 @@ def save_data(idx, data):
     # logging.info(message)
 
 
-def prender_apagar_por_luminocidad():
+def prender_apagar_por_luminocidad(display):
     brillo_prom = values['light'][-60:].mean()
     # print('brillo_prom', brillo_prom)
     display.prender_apagar_por_luminocidad(brillo_prom)
@@ -136,7 +136,7 @@ def main():
             save_data(3, raw_data)
 
             display.display_everything(variables, values, units)
-            prender_apagar_por_luminocidad()
+            prender_apagar_por_luminocidad(display)
 
     # Exit cleanly
     except KeyboardInterrupt:
