@@ -88,6 +88,12 @@ def save_data(idx, data):
     # logging.info(message)
 
 
+def prender_apagar_por_luminocidad():
+    brillo_prom = values['light'][-60:].mean()
+    # print('brillo_prom', brillo_prom)
+    display.prender_apagar_por_luminocidad(brillo_prom)
+
+
 def main():
     global noise
     sensor = sensors.Sensors()
@@ -128,11 +134,9 @@ def main():
             else:
                 raw_data = 1
             save_data(3, raw_data)
+
             display.display_everything(variables, values, units)
-            display.luminocidad(raw_data)
-
-            #noise = sensor.get_noise_amp()
-
+            prender_apagar_por_luminocidad()
 
     # Exit cleanly
     except KeyboardInterrupt:
