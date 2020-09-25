@@ -168,7 +168,8 @@ class Display:
 
     def prender_apagar_por_luminocidad(self, lux):
         if lux > 0:
-            self.set_backlight(12)
+            self.turn_on()
+            self.display_prendido = True
         else:
             self.turn_off()
-
+            self.display_prendido = False
