@@ -42,19 +42,22 @@ values = {}
 # Logger
 LOG = False
 
+
 def log():
     global LOG
     logger = logger_csv.Logger()
     while LOG:
         dic_enviro = {'time': datetime.now(),
                       'temp': values['temperature'][-1],
-                      'humi': values['humidity'][-1]}
-        logger.collect_data('enviro_not_suav', dic_enviro)
+                      'humi': values['humidity'][-1],
+                      'pres': values['pressure'][-1]}
+        logger.collect_data('enviro_not_suav_pres', dic_enviro)
 
         dic_enviro_suav = {'time': datetime.now(),
                            'temp': values['temperature'][-60:].mean(),
-                           'humi': values['humidity'][-60:].mean()}
-        logger.collect_data('dic_enviro_suav', dic_enviro_suav)
+                           'humi': values['humidity'][-60:].mean(),
+                           'pres': values['pressure'][-60:].mean()}
+        logger.collect_data('dic_enviro_suav_pres', dic_enviro_suav)
 
         # dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
         #             '1000-1200': noise[2], '2000-3000': noise[3]}
@@ -66,24 +69,18 @@ def log():
 
 
 def retardar_logger():
+    # Los primeros datos del sensor estan mal asi que no los guardo
     global LOG
-    print("-" * 100)
-    print("A MIMIRRRRRRRRRRRRRRRRRRR")
-    print("-" * 100)
-    #sleep(30)
-    LOG = True
+    sleep(30)
     t_logger = threading.Thread(target=log)
     t_logger.start()
 
 
-# Saves the data to be used in the graphs later and prints to the log
+# Saves the data into an array
 def save_data(idx, data):
     variable = variables[idx]
-    # Maintain length of list
+    # Maintain length of list and add the new value
     values[variable] = np.append(values[variable][1:], [data])
-    unit = units[idx]
-    # message = "{}: {:.1f} {}".format(variable[:4], data, unit)
-    # logging.info(message)
 
 
 def main():
@@ -109,7 +106,7 @@ def main():
 
             if proximity > 1500 and time.time() - ultimo_toque > delay:
                 ultimo_toque = time.time()
-                display.prender_apagar()
+                # display.prender_apagar() Lo comento porque tengo activado el por luminocidad
 
             # Everything on one screen
             raw_data = sensor.get_temperature()
@@ -126,10 +123,10 @@ def main():
             else:
                 raw_data = 1
             save_data(3, raw_data)
+
             display.display_everything(variables, values, units)
-
-            #noise = sensor.get_noise_amp()
-
+            brillo_prom = values['light'][-60:].mean()
+            display.prender_apagar_por_luminocidad(brillo_prom)
 
     # Exit cleanly
     except KeyboardInterrupt:
