@@ -19,7 +19,11 @@ print("PIR Module Test (CTRL-C to exit)")
 currentstate = 0
 previousstate = 0
 ultimo_movimiento = 0
-duracion_fuente = 5
+duracion_fuente = 60
+
+contador = 0
+contador_prendidas = 0
+rele_prendido = False
 
 
 def prender_rele():
@@ -28,6 +32,7 @@ def prender_rele():
 
 def apagar_rele():
     GPIO.output(pin_rele, GPIO.LOW)
+
 
 try:
     print("Waiting for PIR to settle ...")
@@ -45,8 +50,13 @@ try:
         if currentstate == 1 and previousstate == 0:
             print("    Motion detected!")
             ultimo_movimiento = time.time()
-            prender_rele()
+            if not rele_prendido:
+                prender_rele()
+                rele_prendido = True
+                contador_prendidas += 1
+                print('c', contador, '-cp', contador_prendidas)
             previousstate = 1
+            contador += 1
 
         # If the PIR has returned to ready state
         elif currentstate == 0 and previousstate == 1:
@@ -55,6 +65,7 @@ try:
 
         if time.time() - ultimo_movimiento > duracion_fuente:
             apagar_rele()
+            rele_prendido = False
 
         # Wait for 10 milliseconds
         time.sleep(0.01)
