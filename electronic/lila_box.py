@@ -1,6 +1,9 @@
 import RPi.GPIO as GPIO
 import time
+from gpiozero import CPUTemperature
+import sys
 
+cpu = CPUTemperature()
 
 # Set the GPIO naming convention
 GPIO.setmode(GPIO.BCM)
@@ -55,6 +58,7 @@ try:
                 rele_prendido = True
                 contador_prendidas += 1
                 print('c', contador, '-cp', contador_prendidas)
+                print('temp', cpu.temperature)
             previousstate = 1
             contador += 1
 
@@ -66,6 +70,10 @@ try:
         if time.time() - ultimo_movimiento > duracion_fuente:
             apagar_rele()
             rele_prendido = False
+
+        if cpu.temperature > 70:
+            apagar_rele()
+            sys.exit(0)
 
         # Wait for 10 milliseconds
         time.sleep(0.01)
