@@ -62,7 +62,6 @@ try:
                 contador_tiempo = time.time()
                 print('c', contador, '-cp', contador_prendidas)
                 print('temp', cpu.temperature)
-                print('tiempo total', contador_tiempo_total)
             previousstate = 1
             contador += 1
 
@@ -77,6 +76,8 @@ try:
             tiempo_acum = time.time() - contador_tiempo
             contador_tiempo_total += tiempo_acum
             contador_tiempo = 0
+            tiempo_acum = 0
+            print('tiempo total', contador_tiempo_total)
 
         if cpu.temperature > 70:
             apagar_rele()
