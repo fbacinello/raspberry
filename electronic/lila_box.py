@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 from gpiozero import CPUTemperature
 import sys
+import datetime
 
 cpu = CPUTemperature()
 
@@ -60,8 +61,6 @@ try:
                 rele_prendido = True
                 contador_prendidas += 1
                 contador_tiempo = time.time()
-                print('c', contador, '-cp', contador_prendidas)
-                print('temp', cpu.temperature)
             previousstate = 1
             contador += 1
 
@@ -77,7 +76,9 @@ try:
             contador_tiempo_total += tiempo_acum
             contador_tiempo = 0
             tiempo_acum = 0
-            print('tiempo total', contador_tiempo_total)
+            print('c', contador, '-cp', contador_prendidas)
+            print('temp', cpu.temperature)
+            print('tiempo total', str(datetime.timedelta(seconds=contador_tiempo_total)))
 
         if cpu.temperature > 70:
             apagar_rele()
