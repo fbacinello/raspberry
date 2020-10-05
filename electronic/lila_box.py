@@ -26,6 +26,8 @@ duracion_fuente = 60
 
 contador = 0
 contador_prendidas = 0
+contador_tiempo_total = 0
+contador_tiempo = 0
 rele_prendido = False
 
 
@@ -57,8 +59,10 @@ try:
                 prender_rele()
                 rele_prendido = True
                 contador_prendidas += 1
+                contador_tiempo = time.time()
                 print('c', contador, '-cp', contador_prendidas)
                 print('temp', cpu.temperature)
+                print('tiempo total', contador_tiempo_total)
             previousstate = 1
             contador += 1
 
@@ -70,6 +74,9 @@ try:
         if time.time() - ultimo_movimiento > duracion_fuente:
             apagar_rele()
             rele_prendido = False
+            tiempo_acum = time.time() - contador_tiempo
+            contador_tiempo_total += tiempo_acum
+            contador_tiempo = 0
 
         if cpu.temperature > 70:
             apagar_rele()
