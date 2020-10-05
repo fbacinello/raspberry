@@ -70,7 +70,7 @@ try:
             print("    Ready")
             previousstate = 0
 
-        if time.time() - ultimo_movimiento > duracion_fuente:
+        if (time.time() - ultimo_movimiento > duracion_fuente) and rele_prendido:
             apagar_rele()
             rele_prendido = False
             tiempo_acum = time.time() - contador_tiempo
