@@ -57,11 +57,9 @@ def log():
 def loggear_y_reprogramar():
     log()
     resetear_marcadores()
-    now = datetime.datetime.now()
-    print('Ahora:', now)
     en_1_dia = datetime.datetime.now() + datetime.timedelta(days=1)
-    print('dentro de un min:', en_1_dia)
     s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
+    print('Loggeo programado para: ', en_1_dia)
 
 
 def prender_rele():
@@ -76,6 +74,7 @@ try:
     oclock = datetime.datetime.now().replace(minute=0, hour=0, second=1)
     en_1_dia = oclock + datetime.timedelta(days=1)
     s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
+    print('Loggeo programado para: ', en_1_dia)
     s.run()
 
     print("Waiting for PIR to settle ...")
