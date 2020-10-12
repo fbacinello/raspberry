@@ -3,6 +3,11 @@ import time
 from gpiozero import CPUTemperature
 import sys
 import datetime
+import sched
+import logger_csv
+
+
+s = sched.scheduler(time.time, time.sleep)
 
 cpu = CPUTemperature()
 
@@ -32,6 +37,33 @@ contador_tiempo = 0
 rele_prendido = False
 
 
+def resetear_marcadores():
+    contador = 0
+    contador_prendidas = 0
+    contador_tiempo_total = 0
+    contador_tiempo = 0
+
+
+logger = logger_csv.Logger()
+def log():
+    dic = {'time': datetime.datetime.now(),
+           'working': contador_tiempo_total,
+           'cant_mov': contador,
+           'cant_on': contador_prendidas}
+    logger.collect_data('lila_box', dic)
+    logger.log_data()
+
+
+def loggear_y_reprogramar():
+    log()
+    resetear_marcadores()
+    now = datetime.datetime.now()
+    print('Ahora:', now)
+    en_1_dia = datetime.datetime.now() + datetime.timedelta(days=1)
+    print('dentro de un min:', en_1_dia)
+    s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
+
+
 def prender_rele():
     GPIO.output(pin_rele, GPIO.HIGH)
 
@@ -41,6 +73,11 @@ def apagar_rele():
 
 
 try:
+    oclock = datetime.datetime.now().replace(minute=0, hour=0, second=1)
+    en_1_dia = oclock + datetime.timedelta(days=1)
+    s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
+    s.run()
+
     print("Waiting for PIR to settle ...")
     # Loop until PIR output is 0
     while GPIO.input(pin_sensor) == 1:
