@@ -5,6 +5,7 @@ import sys
 import datetime
 import sched
 import logger_csv
+import threading
 
 
 s = sched.scheduler(time.time, time.sleep)
@@ -62,6 +63,16 @@ def loggear_y_reprogramar():
     print('Loggeo programado para: ', en_1_dia)
 
 
+def iniciar_scheluder():
+    oclock = datetime.datetime.now().replace(minute=0, hour=0, second=1)
+    #en_1_dia = oclock + datetime.timedelta(days=1)
+    #s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
+    en_1_dia = datetime.datetime.now() + datetime.timedelta(minutes=5)
+    s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
+    print('Loggeo programado para: ', en_1_dia)
+    s.run()
+
+
 def prender_rele():
     GPIO.output(pin_rele, GPIO.HIGH)
 
@@ -71,11 +82,8 @@ def apagar_rele():
 
 
 try:
-    oclock = datetime.datetime.now().replace(minute=0, hour=0, second=1)
-    en_1_dia = oclock + datetime.timedelta(days=1)
-    s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
-    print('Loggeo programado para: ', en_1_dia)
-    s.run()
+    t_logger = threading.Thread(target=iniciar_scheluder)
+    t_logger.start()
 
     print("Waiting for PIR to settle ...")
     # Loop until PIR output is 0
