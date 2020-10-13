@@ -65,9 +65,7 @@ def loggear_y_reprogramar():
 
 def iniciar_scheluder():
     oclock = datetime.datetime.now().replace(minute=0, hour=0, second=1)
-    #en_1_dia = oclock + datetime.timedelta(days=1)
-    #s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
-    en_1_dia = datetime.datetime.now() + datetime.timedelta(minutes=5)
+    en_1_dia = oclock + datetime.timedelta(days=1)
     s.enterabs(en_1_dia.timestamp(), 1, loggear_y_reprogramar)
     print('Loggeo programado para: ', en_1_dia)
     s.run()
