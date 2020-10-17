@@ -8,7 +8,7 @@ camera.resolution = (2592, 1944)
 camera.rotation = 180
 
 
-def preview(folder=DEFAULT_FOLDER):
+def capture_pic(folder=DEFAULT_FOLDER):
     with camera as cam:
         name = "preview " + fecha_formateada() + ".jpg"
         cam.capture(folder + name)
