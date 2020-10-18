@@ -8,7 +8,7 @@ import keyboard
 import sys
 import time_lapse_captures as cam
 
-FOLDER = "/root/Desktop/New"
+FOLDER = "/root/Desktop/New/"
 
 pos_tilt = -90
 pos_pan = -90

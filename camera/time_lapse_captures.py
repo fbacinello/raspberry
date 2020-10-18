@@ -9,13 +9,8 @@ camera.rotation = 180
 
 
 def preview(folder=DEFAULT_FOLDER):
-    global camera
-    if camera.closed:
-        camera = PiCamera()
-
-    with camera as cam:
-        name = "preview " + fecha_formateada() + ".jpg"
-        cam.capture(folder + name)
+    name = "preview " + fecha_formateada() + ".jpg"
+    camera.capture(folder + name)
 
 
 def calcular_tiempo_time_lapse(cant_fotos, tiempo_entre_foto):
