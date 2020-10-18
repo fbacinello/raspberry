@@ -8,7 +8,7 @@ import keyboard
 import sys
 import time_lapse_captures as cam
 
-FOLDER = "/home/pi/Desktop/"
+FOLDER = "/root/Desktop/New"
 
 pos_tilt = -90
 pos_pan = -90
@@ -16,15 +16,6 @@ bandera = True
 delay = 0.1
 last_touch = 0
 speed = 4
-
-
-def cam_preview(start=0):
-    cam.start_preview(start)
-
-
-def cam_stop():
-    cam.stop_preview()
-
 
 def mover_pan(i):
     pantilthat.pan(int(i))
@@ -100,10 +91,6 @@ def on_press_handler(event):
 
 
 keyboard.on_press(on_press_handler)
-
-x = threading.Thread(target=cam_preview, args=[15])
-x.start()
-time.sleep(0.5)
 
 while bandera:
     pass

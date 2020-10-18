@@ -9,6 +9,10 @@ camera.rotation = 180
 
 
 def preview(folder=DEFAULT_FOLDER):
+    global camera
+    if camera.closed:
+        camera = PiCamera()
+
     with camera as cam:
         name = "preview " + fecha_formateada() + ".jpg"
         cam.capture(folder + name)
@@ -36,9 +40,11 @@ def start_preview(time=5):
     if not time == 0:
         camera.stop_preview()
 
+
 def stop_preview():
     camera.stop_preview()
     camera.close()
+
 
 def record(time=5, folder=DEFAULT_FOLDER):
     with camera as cam:
