@@ -9,6 +9,9 @@ camera.rotation = 180
 
 
 def capture_pic(folder=DEFAULT_FOLDER):
+    global camera
+    if camera.closed:
+        camera = PiCamera()
     with camera as cam:
         name = "preview " + fecha_formateada() + ".jpg"
         cam.capture(folder + name)
