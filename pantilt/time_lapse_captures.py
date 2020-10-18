@@ -8,6 +8,10 @@ camera.resolution = (2592, 1944)
 camera.rotation = 180
 
 
+def set_rotation(i):
+    camera.rotation = i
+
+
 def capture_pic(folder=DEFAULT_FOLDER):
     global camera
     if camera.closed:

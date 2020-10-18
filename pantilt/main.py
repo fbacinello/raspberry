@@ -1,6 +1,5 @@
 import time
 import pantilthat
-import time_lapse_captures as cam
 # import ../camera/time_lapse_captures as cam
 # https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 import threading
@@ -8,7 +7,8 @@ import keyboard
 import sys
 import time_lapse_captures as cam
 
-FOLDER = "/root/Desktop/New/"
+# FOLDER = "/root/Desktop/New/"  # ROOT
+FOLDER = "/home/pi/Desktop/"   # PI USER
 
 pos_tilt = -90
 pos_pan = -90
@@ -32,6 +32,8 @@ def mover_horizontal(direccion):
         pos_pan -= speed
     if direccion == 'left' and pos_pan < 90:
         pos_pan += speed
+
+    cam.set_rotation(180 + pos_pan)
     mover_pan(pos_pan)
 
 
