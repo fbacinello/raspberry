@@ -17,6 +17,9 @@ delay = 0.1
 last_touch = 0
 speed = 4
 
+def cam_preview(start=0):
+    cam.start_preview(start)
+
 def mover_pan(i):
     pantilthat.pan(int(i))
 
@@ -93,6 +96,8 @@ def on_press_handler(event):
 
 
 keyboard.on_press(on_press_handler)
+x = threading.Thread(target=cam_preview, args=[15])
+x.start()
 
 while bandera:
     pass

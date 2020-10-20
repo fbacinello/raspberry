@@ -10,9 +10,9 @@ import sys
 pos_tilt = -90
 pos_pan = -90
 bandera = True
-delay = 0.1
+delay = 0.05
 last_touch = 0
-speed = 4
+speed = 2
 
 
 def cam_preview(start=0):
