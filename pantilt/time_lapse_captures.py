@@ -12,13 +12,23 @@ def set_rotation(i):
     camera.rotation = i
 
 
-def capture_pic(folder=DEFAULT_FOLDER):
+def capture_pic(folder=DEFAULT_FOLDER, name=None):
     global camera
     if camera.closed:
         camera = PiCamera()
     with camera as cam:
-        name = "preview " + fecha_formateada() + ".jpg"
-        cam.capture(folder + name)
+        if name:
+            cam.capture(folder + name)
+        else:
+            cam.capture(folder + "preview " + fecha_formateada() + ".jpg")
+
+
+def capture_stream_pic(stream):
+    global camera
+    if camera.closed:
+        camera = PiCamera()
+    with camera as cam:
+        cam.capture(stream, format='jpeg')
 
 
 def calcular_tiempo_time_lapse(cant_fotos, tiempo_entre_foto):
@@ -43,9 +53,11 @@ def start_preview(time=5):
     if not time == 0:
         camera.stop_preview()
 
+
 def stop_preview():
     camera.stop_preview()
     camera.close()
+
 
 def record(time=5, folder=DEFAULT_FOLDER):
     with camera as cam:

@@ -8,6 +8,8 @@ import sys
 import time_lapse_captures as cam
 import cv2 as cv
 import imutils
+import io
+import numpy
 
 # FOLDER = "/root/Desktop/New/"  # ROOT
 FOLDER = "/home/pi/Desktop/"   # PI USER
@@ -19,8 +21,12 @@ delay = 0.1
 last_touch = 0
 speed = 4
 
+#Create a memory stream so photos doesn't need to be saved in a file
+stream = io.BytesIO()
+
 def cam_preview(start=0):
     cam.start_preview(start)
+
 
 def mover_pan(i):
     pantilthat.pan(int(i))
@@ -38,7 +44,6 @@ def mover_horizontal(direccion):
     if direccion == 'left' and pos_pan < 90:
         pos_pan += speed
 
-    cam.set_rotation(180 + pos_pan)
     mover_pan(pos_pan)
 
 
@@ -92,14 +97,22 @@ def on_press_handler(event):
             volver_posicion()
             sys.exit()
         if key == 'enter':
+            fecha = cam.fecha_formateada()
+            pic_name = fecha
             cam.capture_pic(FOLDER)
-        if key == 'v':
-            cap = cv.VideoCapture(0)
-            ret, frame = cap.read()
-            frame = imutils.rotate(frame, 135)
-            cv.imshow('Capture - Face detection', frame)
-            
-        print(key)
+
+            cam.capture_stream_pic(stream)
+            # Convert the picture into a numpy array
+            buff = numpy.frombuffer(stream.getvalue(), dtype=numpy.uint8)
+
+            # Now creates an OpenCV image
+            image = cv.imdecode(buff, 1)
+            pic_rot_name = 'rot' + fecha
+
+            rot_image = imutils.rotate(image, 135)
+            # Save the result image
+            cv.imwrite(FOLDER + pic_rot_name, rot_image)
+
         log()
 
 
