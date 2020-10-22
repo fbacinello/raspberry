@@ -1,6 +1,7 @@
 from __future__ import print_function
 import cv2 as cv
 import argparse
+import imutils
 
 
 def detectAndDisplay(frame):
@@ -50,6 +51,7 @@ while True:
     fps = cap.get(5)
     cv.putText(frame, str(fps), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
 
+    # frame = imutils.rotate(frame, 135)
     detectAndDisplay(frame)
 
     if cv.waitKey(1) == ord('q'):

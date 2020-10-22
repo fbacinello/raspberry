@@ -6,6 +6,8 @@ import threading
 import keyboard
 import sys
 import time_lapse_captures as cam
+import cv2 as cv
+import imutils
 
 # FOLDER = "/root/Desktop/New/"  # ROOT
 FOLDER = "/home/pi/Desktop/"   # PI USER
@@ -91,12 +93,18 @@ def on_press_handler(event):
             sys.exit()
         if key == 'enter':
             cam.capture_pic(FOLDER)
+        if key == 'v':
+            cap = cv.VideoCapture(0)
+            ret, frame = cap.read()
+            frame = imutils.rotate(frame, 135)
+            cv.imshow('Capture - Face detection', frame)
+            
         print(key)
         log()
 
 
 keyboard.on_press(on_press_handler)
-x = threading.Thread(target=cam_preview, args=[15])
+x = threading.Thread(target=cam_preview, args=[1])
 x.start()
 
 while bandera:
