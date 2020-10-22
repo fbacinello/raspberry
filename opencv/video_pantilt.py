@@ -5,35 +5,25 @@ import pantilthat
 import threading
 import keyboard
 import sys
-import time_lapse_captures as cam
 import cv2 as cv
 import imutils
-import io
-import numpy
-
-# FOLDER = "/root/Desktop/New/"  # ROOT
-FOLDER = "/home/pi/Desktop/"   # PI USER
 
 pos_tilt = -90
 pos_pan = -90
 bandera = True
-delay = 0.1
+delay = 0.05
 last_touch = 0
-speed = 4
-
-#Create a memory stream so photos doesn't need to be saved in a file
-stream = io.BytesIO()
-
-def cam_preview(start=0):
-    cam.start_preview(start)
+speed = 2
 
 
-def mover_pan(i):
+
+def mover_pan(i):    
     pantilthat.pan(int(i))
+    
 
 
-def mover_tilt(i):
-    pantilthat.tilt(int(i))
+def mover_tilt(i):    
+    pantilthat.tilt(int(i))    
 
 
 def mover_horizontal(direccion):
@@ -43,8 +33,7 @@ def mover_horizontal(direccion):
         pos_pan -= speed
     if direccion == 'left' and pos_pan < 90:
         pos_pan += speed
-
-    mover_pan(pos_pan)
+    mover_pan(pos_pan)    
 
 
 def mover_vertical(direccion):
@@ -57,7 +46,7 @@ def mover_vertical(direccion):
     mover_tilt(pos_tilt)
 
 
-def volver_posicion():
+def volver_posicion():    
     global pos_tilt
     for i in range(pos_tilt, -90, -1):
         time.sleep(0.01)
@@ -85,6 +74,7 @@ def on_press_handler(event):
         pass
     else:
         last_touch = timestamp
+    
 
         key = event.name
         if key in ('left', 'right'):
@@ -93,36 +83,46 @@ def on_press_handler(event):
             mover_vertical(key)
         if key == 'esc':
             global bandera
-            bandera = False
+            bandera = False        
             volver_posicion()
             sys.exit()
-        if key == 'enter':
-            fecha = cam.fecha_formateada()
-            pic_name = fecha + '.jpg'
-            cam.capture_pic(FOLDER, pic_name)
-
-            cam.capture_stream_pic(stream)
-            # Convert the picture into a numpy array
-            buff = numpy.frombuffer(stream.getvalue(), dtype=numpy.uint8)
-
-            # Now creates an OpenCV image
-            image = cv.imdecode(buff, 1)
-            pic_rot_name = 'rot' + fecha + '.jpg'
-
-            rot_image = imutils.rotate(image, 180 - pos_pan)
-
-# Save the result image
-            cv.imwrite(FOLDER + pic_rot_name, rot_image)
-
+    
         log()
 
 
-keyboard.on_press(on_press_handler)
-x = threading.Thread(target=cam_preview, args=[1])
-x.start()
 
-while bandera:
-    pass
+
+keyboard.on_press(on_press_handler)
+
+
+
+# -- 2. Read the video stream
+cap = cv.VideoCapture(0)
+if not cap.isOpened:
+    print('--(!)Error opening video capture')
+    exit(0)
+
+while True:
+    ret, frame = cap.read()
+    if frame is None:
+        print('--(!) No captured frame -- Break!')
+        break
+
+    fps = cap.get(5)
+    cv.putText(frame, str(fps), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
+
+    # frame = imutils.rotate(frame, 135)
+    # detectAndDisplay(frame)
+    
+    frame = imutils.rotate(frame, 180 - pos_pan)
+    cv.imshow('Capture - Face detection', frame)
+    if cv.waitKey(1) == ord('q'):
+        break
+
+cap.release()
+cv.destroyAllWindows()
+
+
 
 
 

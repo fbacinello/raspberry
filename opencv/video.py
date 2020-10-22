@@ -52,8 +52,8 @@ while True:
     cv.putText(frame, str(fps), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
 
     # frame = imutils.rotate(frame, 135)
-    detectAndDisplay(frame)
-
+    # detectAndDisplay(frame)
+    cv.imshow('Capture - Face detection', frame)
     if cv.waitKey(1) == ord('q'):
         break
 
