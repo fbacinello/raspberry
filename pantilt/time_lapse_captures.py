@@ -27,8 +27,8 @@ def capture_stream_pic(stream):
     global camera
     if camera.closed:
         camera = PiCamera()
-    with camera as cam:
-        cam.capture(stream, format='jpeg')
+    camera.capture(stream, format='jpeg')
+        
 
 
 def calcular_tiempo_time_lapse(cant_fotos, tiempo_entre_foto):

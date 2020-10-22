@@ -98,8 +98,8 @@ def on_press_handler(event):
             sys.exit()
         if key == 'enter':
             fecha = cam.fecha_formateada()
-            pic_name = fecha
-            cam.capture_pic(FOLDER)
+            pic_name = fecha + '.jpg'
+            cam.capture_pic(FOLDER, pic_name)
 
             cam.capture_stream_pic(stream)
             # Convert the picture into a numpy array
@@ -107,7 +107,7 @@ def on_press_handler(event):
 
             # Now creates an OpenCV image
             image = cv.imdecode(buff, 1)
-            pic_rot_name = 'rot' + fecha
+            pic_rot_name = 'rot' + fecha + '.jpg'
 
             rot_image = imutils.rotate(image, 135)
             # Save the result image
