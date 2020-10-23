@@ -7,6 +7,7 @@ import keyboard
 import sys
 import cv2 as cv
 import imutils
+import pygame
 
 pos_tilt = -90
 pos_pan = -90
@@ -15,11 +16,11 @@ delay = 0.05
 last_touch = 0
 speed = 2
 
+pygame.init()
 
 
 def mover_pan(i):    
     pantilthat.pan(int(i))
-    
 
 
 def mover_tilt(i):    
@@ -74,7 +75,6 @@ def on_press_handler(event):
         pass
     else:
         last_touch = timestamp
-    
 
         key = event.name
         if key in ('left', 'right'):
@@ -90,9 +90,21 @@ def on_press_handler(event):
         log()
 
 
-        
+def mover_pygame():
+    key_input = pygame.key.get_pressed()
+    if key_input[pygame.K_LEFT]:
+        mover_horizontal('left')
+    if key_input[pygame.K_RIGHT]:
+        mover_horizontal('right')
 
-keyboard.on_press(on_press_handler)
+    if key_input[pygame.K_UP]:
+        mover_vertical('up')
+    if key_input[pygame.K_DOWN]:
+        mover_vertical('down')
+
+    log()
+
+# keyboard.on_press(on_press_handler)
 
 
 # -- 2. Read the video stream
@@ -102,6 +114,7 @@ if not cap.isOpened:
     exit(0)
 
 while True:
+    mover_pygame()
     ret, frame = cap.read()
     if frame is None:
         print('--(!) No captured frame -- Break!')
