@@ -90,12 +90,10 @@ def on_press_handler(event):
         log()
 
 
-def keyboard_handler():
-    while True:
-        keyboard.on_press(on_press_handler)
+        
 
+keyboard.on_press(on_press_handler)
 
-threading.Thread(target=keyboard_handler).start()
 
 # -- 2. Read the video stream
 cap = cv.VideoCapture(0)
@@ -116,6 +114,7 @@ while True:
     # detectAndDisplay(frame)
     
     frame = imutils.rotate(frame, 180 - pos_pan)
+    # frame = imutils.rotate(frame, 180)
     cv.imshow('Capture - Face detection', frame)
     if cv.waitKey(1) == ord('q'):
         break
