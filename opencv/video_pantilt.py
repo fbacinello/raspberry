@@ -17,6 +17,14 @@ last_touch = 0
 speed = 2
 
 pygame.init()
+fps=30
+fpsclock=pygame.time.Clock()
+sur_obj=pygame.display.set_mode((180,180))
+pygame.display.set_caption("Keyboard_Input")
+White=(255,255,255)
+p1=10
+p2=10
+step=5
 
 
 def mover_pan(i):    
@@ -89,19 +97,32 @@ def on_press_handler(event):
     
         log()
 
-
 def mover_pygame():
-    key_input = pygame.key.get_pressed()
+    global p1
+    global p2
+    
+    sur_obj.fill(White)
+    pygame.draw.rect(sur_obj, (255,0,0), (p1, p2, 70, 65))
+    for eve in pygame.event.get():
+        if eve.type==pygame.QUIT:
+            volver_posicion()            
+            pygame.quit()
+            sys.exit()
+    key_input = pygame.key.get_pressed()   
     if key_input[pygame.K_LEFT]:
+        p1 -= step
         mover_horizontal('left')
-    if key_input[pygame.K_RIGHT]:
-        mover_horizontal('right')
-
     if key_input[pygame.K_UP]:
+        p2 -= step
         mover_vertical('up')
+    if key_input[pygame.K_RIGHT]:
+        p1 += step
+        mover_horizontal('right')
     if key_input[pygame.K_DOWN]:
+        p2 += step
         mover_vertical('down')
-
+    pygame.display.update()
+    fpsclock.tick(fps)
     log()
 
 # keyboard.on_press(on_press_handler)
