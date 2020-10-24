@@ -73,3 +73,7 @@ def show_exposure(time=2):
 
 def fecha_formateada():
     return str(datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S"))
+
+
+def zoomear(x, y, w, h):
+    camera.zoom = (x, y, w, h)
