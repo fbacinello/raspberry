@@ -303,8 +303,8 @@ WIDTH = disp.width
 HEIGHT = disp.height
 
 # The city and timezone that you want to display.
-city_name = "Sheffield"
-time_zone = "Europe/London"
+city_name = "Madrid"
+time_zone = "Europe/Madrid"
 
 # Values that alter the look of the background
 blur = 50
@@ -345,6 +345,15 @@ trend = "-"
 
 # Keep track of time elapsed
 start_time = time.time()
+
+
+def apagar_luz_active():
+    with open("/sys/class/leds/led0/brightness", "w") as f:
+        f.write('1\n')
+
+
+apagar_luz_active()
+
 
 while True:
     path = os.path.dirname(os.path.realpath(__file__))
