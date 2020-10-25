@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+import logger_csv
+import threading
+from time import sleep
+import numpy as np
 
 import os
 import time
@@ -346,6 +350,71 @@ trend = "-"
 # Keep track of time elapsed
 start_time = time.time()
 
+# ########################## CODIGO QUE METI YO ##########################
+
+# Create a values dict to store the data
+variables = ["temperature",
+             "pressure",
+             "humidity",
+             "light"]
+values = {}
+
+
+# Saves the data into an array
+def save_data(idx, data):
+    variable = variables[idx]
+    # Maintain length of list and add the new value
+    values[variable] = np.append(values[variable][1:], [data])
+
+
+def save_all_data(temp, press, humi, ligh):
+    save_data(0, temp)
+    save_data(1, press)
+    save_data(2, humi)
+    save_data(3, ligh)
+
+
+def inicializar_variables_data():
+    for v in variables:
+        values[v] = np.ones(160)
+
+
+# Logger
+LOG = True
+
+
+def log():
+    global LOG
+    logger = logger_csv.Logger()
+    while LOG:
+        dic_enviro = {'time': datetime.now(),
+                      'temp': values['temperature'][-1],
+                      'humi': values['humidity'][-1],
+                      'pres': values['pressure'][-1]}
+        logger.collect_data('enviro_not_suav_pres', dic_enviro)
+
+        dic_enviro_suav = {'time': datetime.now(),
+                           'temp': values['temperature'][-60:].mean(),
+                           'humi': values['humidity'][-60:].mean(),
+                           'pres': values['pressure'][-60:].mean()}
+        logger.collect_data('dic_enviro_suav_pres', dic_enviro_suav)
+
+        # dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
+        #             '1000-1200': noise[2], '2000-3000': noise[3]}
+        # logger.collect_data('noise', dic_noise)
+
+        logger.log_data()
+        print("Logging")
+        sleep(60)
+
+
+def retardar_logger():
+    # Los primeros datos del sensor estan mal asi que no los guardo
+    global LOG
+    sleep(30)
+    t_logger = threading.Thread(target=log)
+    t_logger.start()
+
 
 def apagar_luz_active():
     with open("/sys/class/leds/led0/brightness", "w") as f:
@@ -353,6 +422,12 @@ def apagar_luz_active():
 
 
 apagar_luz_active()
+inicializar_variables_data()
+
+t_logger = threading.Thread(target=retardar_logger)
+t_logger.start()
+
+# ########################################################################
 
 
 while True:
@@ -432,3 +507,5 @@ while True:
 
     # Display image
     disp.display(img)
+
+    save_all_data(corr_temperature, pressure, humidity, light)
