@@ -40,7 +40,7 @@ noise = [[0, 0, 0, 0]]
 values = {}
 
 # Logger
-LOG = False
+LOG = True
 
 
 def log():
