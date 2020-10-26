@@ -499,4 +499,4 @@ while True:
     # Display image
     disp.display(img)
 
-    save_all_data(corr_temperature, pressure, humidity, light)
+    save_all_data(corr_temperature, pressure, corr_humidity, light)
