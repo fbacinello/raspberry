@@ -3,6 +3,8 @@ import logger_csv
 import threading
 from time import sleep
 import numpy as np
+import sensors
+import display as pantalla
 
 import os
 import time
@@ -12,7 +14,6 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from fonts.ttf import RobotoMedium as UserFont
 
 import ST7735
-from bme280 import BME280
 from ltr559 import LTR559
 
 import pytz
@@ -326,19 +327,8 @@ font_lg = ImageFont.truetype(UserFont, 14)
 # Margins
 margin = 3
 
-
-# Set up BME280 weather sensor
-bus = SMBus(1)
-bme280 = BME280(i2c_dev=bus)
-
 min_temp = None
 max_temp = None
-
-factor = 2.25
-cpu_temps = [get_cpu_temperature()] * 5
-
-# Set up light sensor
-ltr559 = LTR559()
 
 # Pressure variables
 pressure_vals = []
@@ -427,6 +417,9 @@ inicializar_variables_data()
 t_logger = threading.Thread(target=retardar_logger)
 t_logger.start()
 
+sensor = sensors.Sensors()
+display1 = pantalla.Display(rotation=270)
+
 # ########################################################################
 
 
@@ -443,13 +436,8 @@ while True:
     img = overlay_text(img, (WIDTH - margin, 0 + margin), date_string, font_lg, align_right=True)
 
     # Temperature
-    temperature = bme280.get_temperature()
-
-    # Corrected temperature
-    cpu_temp = get_cpu_temperature()
-    cpu_temps = cpu_temps[1:] + [cpu_temp]
-    avg_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
-    corr_temperature = temperature - ((avg_cpu_temp - temperature) / factor)
+    temperature = sensor.get_temperature()
+    corr_temperature = sensor.get_correct_temperature()
 
     if time_elapsed > 30:
         if min_temp is not None and max_temp is not None:
@@ -473,8 +461,9 @@ while True:
     img.paste(temp_icon, (margin, 18), mask=temp_icon)
 
     # Humidity
-    humidity = bme280.get_humidity()
-    corr_humidity = correct_humidity(humidity, temperature, corr_temperature)
+    humidity = sensor.get_humidity()
+    corr_humidity = sensor.get_correct_humidity()
+
     humidity_string = f"{corr_humidity:.0f}%"
     img = overlay_text(img, (68, 48), humidity_string, font_lg, align_right=True)
     spacing = font_lg.getsize(humidity_string)[1] + 1
@@ -484,7 +473,8 @@ while True:
     img.paste(humidity_icon, (margin, 48), mask=humidity_icon)
 
     # Light
-    light = ltr559.get_lux()
+    light = sensor.get_lux()
+
     light_string = f"{int(light):,}"
     img = overlay_text(img, (WIDTH - margin, 18), light_string, font_lg, align_right=True)
     spacing = font_lg.getsize(light_string.replace(",", ""))[1] + 1
@@ -494,7 +484,8 @@ while True:
     img.paste(humidity_icon, (80, 18), mask=light_icon)
 
     # Pressure
-    pressure = bme280.get_pressure()
+    pressure = sensor.get_pressure()
+
     t = time.time()
     mean_pressure, change_per_hour, trend = analyse_pressure(pressure, t)
     pressure_string = f"{int(mean_pressure):,} {trend}"
