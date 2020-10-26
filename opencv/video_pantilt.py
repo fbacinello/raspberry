@@ -1,9 +1,5 @@
 import time
 import pantilthat
-# import ../camera/time_lapse_captures as cam
-# https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
-import threading
-import keyboard
 import sys
 import cv2 as cv
 import imutils
@@ -17,14 +13,14 @@ last_touch = 0
 speed = 2
 
 pygame.init()
-fps=30
-fpsclock=pygame.time.Clock()
-sur_obj=pygame.display.set_mode((180,180))
+fps = 30
+fpsclock = pygame.time.Clock()
+sur_obj = pygame.display.set_mode((180, 180))
 pygame.display.set_caption("Keyboard_Input")
-White=(255,255,255)
-p1=10
-p2=10
-step=5
+White = (255, 255, 255)
+p1 = 10
+p2 = 10
+step = 5
 
 
 def mover_pan(i):    
@@ -97,17 +93,20 @@ def on_press_handler(event):
     
         log()
 
+
 def mover_pygame():
     global p1
     global p2
     
     sur_obj.fill(White)
-    pygame.draw.rect(sur_obj, (255,0,0), (p1, p2, 70, 65))
+    pygame.draw.rect(sur_obj, (255, 0, 0), (p1, p2, 70, 65))
+
     for eve in pygame.event.get():
-        if eve.type==pygame.QUIT:
+        if eve.type == pygame.QUIT:
             volver_posicion()            
             pygame.quit()
             sys.exit()
+
     key_input = pygame.key.get_pressed()   
     if key_input[pygame.K_LEFT]:
         p1 -= step
@@ -124,8 +123,6 @@ def mover_pygame():
     pygame.display.update()
     fpsclock.tick(fps)
     log()
-
-# keyboard.on_press(on_press_handler)
 
 
 # -- 2. Read the video stream
@@ -144,19 +141,10 @@ while True:
     fps = cap.get(5)
     cv.putText(frame, str(fps), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
 
-    # frame = imutils.rotate(frame, 135)
-    # detectAndDisplay(frame)
-    
     frame = imutils.rotate(frame, 180 - pos_pan)
-    # frame = imutils.rotate(frame, 180)
-    cv.imshow('Capture - Face detection', frame)
+    cv.imshow('Capture - Rotate on pan', frame)
     if cv.waitKey(1) == ord('q'):
         break
 
 cap.release()
 cv.destroyAllWindows()
-
-
-
-
-
