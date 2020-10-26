@@ -195,19 +195,6 @@ def overlay_text(img, position, text, font, align_right=False, rectangle=False):
     return img
 
 
-def get_cpu_temperature():
-    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
-        temp = f.read()
-        temp = int(temp) / 1000.0
-    return temp
-
-
-def correct_humidity(humidity, temperature, corr_temperature):
-    dewpoint = temperature - ((100 - humidity) / 5)
-    corr_humidity = 100 - (5 * (corr_temperature - dewpoint))
-    return min(100, corr_humidity)
-
-
 def analyse_pressure(pressure, t):
     global time_vals, pressure_vals, trend
     if len(pressure_vals) > num_vals:
@@ -291,21 +278,6 @@ def describe_light(light):
         description = "bright"
     return description
 
-
-# Initialise the LCD
-disp = ST7735.ST7735(
-    port=0,
-    cs=1,
-    dc=9,
-    backlight=12,
-    rotation=270,
-    spi_speed_hz=10000000
-)
-
-disp.begin()
-
-WIDTH = disp.width
-HEIGHT = disp.height
 
 # The city and timezone that you want to display.
 city_name = "Madrid"
@@ -418,12 +390,23 @@ t_logger = threading.Thread(target=retardar_logger)
 t_logger.start()
 
 sensor = sensors.Sensors()
-display1 = pantalla.Display(rotation=270)
 
+display = pantalla.Display(rotation=270)
+WIDTH = display.width
+HEIGHT = display.height
+
+delay = 0.5  # Debounce the proximity tap
+ultimo_toque = 0  # cuando se hizo el ultimo toque
 # ########################################################################
 
 
 while True:
+    proximity = sensor.get_proximity()
+
+    if proximity > 1500 and time.time() - ultimo_toque > delay:
+        ultimo_toque = time.time()
+        display.prender_apagar()
+
     path = os.path.dirname(os.path.realpath(__file__))
     progress, period, day, local_dt = sun_moon_time(city_name, time_zone)
     background = draw_background(progress, period, day)
@@ -497,6 +480,6 @@ while True:
     img.paste(pressure_icon, (80, 48), mask=pressure_icon)
 
     # Display image
-    disp.display(img)
+    display.display(img)
 
     save_all_data(corr_temperature, pressure, corr_humidity, light)
