@@ -392,8 +392,8 @@ t_logger.start()
 sensor = sensors.Sensors()
 
 display = pantalla.Display(rotation=270)
-WIDTH = display.width
-HEIGHT = display.height
+WIDTH = display.WIDTH
+HEIGHT = display.HEIGHT
 
 delay = 0.5  # Debounce the proximity tap
 ultimo_toque = 0  # cuando se hizo el ultimo toque
