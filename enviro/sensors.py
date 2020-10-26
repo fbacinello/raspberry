@@ -29,6 +29,9 @@ class Sensors:
         return float(output[output.index('=') + 1:output.rindex("'")])
 
     def get_temperature(self):
+        return self.bme280.get_temperature()
+
+    def get_correct_temperature(self):
         if self.cpu_temps is None:
             self.cpu_temps = [self.get_cpu_temperature()] * 5
 
@@ -36,8 +39,7 @@ class Sensors:
         # Smooth out with some averaging to decrease jitter
         self.cpu_temps = self.cpu_temps[1:] + [cpu_temp]
         avg_cpu_temp = sum(self.cpu_temps) / float(len(self.cpu_temps))
-        #print(avg_cpu_temp)
-        raw_temp = self.bme280.get_temperature()
+        raw_temp = self.get_temperature()
         raw_data = raw_temp - ((avg_cpu_temp - raw_temp) / self.factor)
         return raw_data
 
@@ -46,6 +48,11 @@ class Sensors:
 
     def get_humidity(self):
         return self.bme280.get_humidity()
+
+    def get_correct_humidity(self):
+        dewpoint = self.get_temperature() - ((100 - self.get_humidity()) / 5)
+        corr_humidity = 100 - (5 * (self.get_correct_temperature() - dewpoint))
+        return min(100, corr_humidity)
 
     def get_lux(self):
         return self.ltr559.get_lux()
