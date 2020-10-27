@@ -132,7 +132,6 @@ if not cap.isOpened:
     exit(0)
 
 while True:
-    mover_pygame()
     ret, frame = cap.read()
     if frame is None:
         print('--(!) No captured frame -- Break!')
@@ -145,6 +144,8 @@ while True:
     cv.imshow('Capture - Rotate on pan', frame)
     if cv.waitKey(1) == ord('q'):
         break
+
+    mover_pygame()
 
 cap.release()
 cv.destroyAllWindows()
