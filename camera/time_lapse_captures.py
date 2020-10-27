@@ -1,5 +1,5 @@
 from time import sleep
-from picamera import PiCamera
+from picamera import PiCamera, PiRenderer
 import datetime
 
 DEFAULT_FOLDER = "/home/pi/Desktop/"
@@ -28,9 +28,9 @@ def time_lapse(cant_fotos, tiempo_entre_foto, folder=DEFAULT_FOLDER):
     camera.close()
 
 
-def start_preview(time=5):
+def start_preview(time=5, fullscreen=False):
     camera.resolution = (1920, 1080)
-    camera.start_preview()
+    camera.start_preview(fullscreen = fullscreen, window=(0,0,640, 480))    
     sleep(time)
     if not time == 0:
         camera.stop_preview()
