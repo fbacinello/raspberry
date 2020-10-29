@@ -4,6 +4,7 @@ import sys
 import cv2 as cv
 import imutils
 import pygame
+import threading
 
 pos_tilt = -90
 pos_pan = -90
@@ -87,7 +88,8 @@ def mover_pygame():
 
     for eve in pygame.event.get():
         if eve.type == pygame.QUIT:
-            salir()
+            t = threading.Thread(target=salir)
+            t.start()
 
     key_input = pygame.key.get_pressed()   
     if key_input[pygame.K_LEFT]:
@@ -105,7 +107,8 @@ def mover_pygame():
         mover_vertical('down')
 
     if key_input[pygame.K_ESCAPE]:
-        salir()
+        t = threading.Thread(target=salir)
+        t.start()
 
     pygame.display.update()
     fpsclock.tick(fps)
