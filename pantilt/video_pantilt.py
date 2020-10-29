@@ -1,9 +1,5 @@
 import time
 import pantilthat
-# import ../camera/time_lapse_captures as cam
-# https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
-import threading
-import keyboard
 import sys
 import cv2 as cv
 import imutils
@@ -17,14 +13,14 @@ last_touch = 0
 speed = 2
 
 pygame.init()
-fps=30
-fpsclock=pygame.time.Clock()
-sur_obj=pygame.display.set_mode((180,180))
+fps = 30
+fpsclock = pygame.time.Clock()
+sur_obj = pygame.display.set_mode((180, 180))
 pygame.display.set_caption("Keyboard_Input")
-White=(255,255,255)
-p1=10
-p2=10
-step=5
+White = (255, 255, 255)
+p1 = 10
+p2 = 10
+step = 5
 
 
 def mover_pan(i):    
@@ -74,58 +70,46 @@ def log():
     print('h', pos_pan, 'v', pos_tilt)
 
 
-def on_press_handler(event):
-    timestamp = event.time
-    global last_touch
-    global delay
-    if not timestamp - last_touch > delay:
-        print('muy rapido')
-        pass
-    else:
-        last_touch = timestamp
+def salir():
+    volver_posicion()
+    pygame.quit()
+    cap.release()
+    cv.destroyAllWindows()
+    sys.exit()
 
-        key = event.name
-        if key in ('left', 'right'):
-            mover_horizontal(key)
-        if key in ('up', 'down'):
-            mover_vertical(key)
-        if key == 'esc':
-            global bandera
-            bandera = False        
-            volver_posicion()
-            sys.exit()
-    
-        log()
 
 def mover_pygame():
     global p1
     global p2
     
     sur_obj.fill(White)
-    pygame.draw.rect(sur_obj, (255,0,0), (p1, p2, 70, 65))
+    pygame.draw.rect(sur_obj, (255, 0, 0), (p1, p2, 70, 65))
+
     for eve in pygame.event.get():
-        if eve.type==pygame.QUIT:
-            volver_posicion()            
-            pygame.quit()
-            sys.exit()
+        if eve.type == pygame.QUIT:
+            salir()
+
     key_input = pygame.key.get_pressed()   
     if key_input[pygame.K_LEFT]:
         p1 -= step
         mover_horizontal('left')
-    if key_input[pygame.K_UP]:
-        p2 -= step
-        mover_vertical('up')
     if key_input[pygame.K_RIGHT]:
         p1 += step
         mover_horizontal('right')
+
+    if key_input[pygame.K_UP]:
+        p2 -= step
+        mover_vertical('up')
     if key_input[pygame.K_DOWN]:
         p2 += step
         mover_vertical('down')
+
+    if key_input[pygame.K_ESCAPE]:
+        salir()
+
     pygame.display.update()
     fpsclock.tick(fps)
     log()
-
-# keyboard.on_press(on_press_handler)
 
 
 # -- 2. Read the video stream
@@ -135,7 +119,6 @@ if not cap.isOpened:
     exit(0)
 
 while True:
-    mover_pygame()
     ret, frame = cap.read()
     if frame is None:
         print('--(!) No captured frame -- Break!')
@@ -144,19 +127,9 @@ while True:
     fps = cap.get(5)
     cv.putText(frame, str(fps), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
 
-    # frame = imutils.rotate(frame, 135)
-    # detectAndDisplay(frame)
-    
     frame = imutils.rotate(frame, 180 - pos_pan)
-    # frame = imutils.rotate(frame, 180)
-    cv.imshow('Capture - Face detection', frame)
+    cv.imshow('Capture - Rotate on pan', frame)
     if cv.waitKey(1) == ord('q'):
         break
 
-cap.release()
-cv.destroyAllWindows()
-
-
-
-
-
+    mover_pygame()

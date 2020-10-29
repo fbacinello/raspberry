@@ -8,24 +8,14 @@ import display as pantalla
 
 import os
 import time
-import numpy
 import colorsys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from fonts.ttf import RobotoMedium as UserFont
 
-import ST7735
-from ltr559 import LTR559
-
 import pytz
-from pytz import timezone
 from astral.geocoder import database, lookup
 from astral.sun import sun
 from datetime import datetime, timedelta
-
-try:
-    from smbus2 import SMBus
-except ImportError:
-    from smbus import SMBus
 
 
 def calculate_y_pos(x, centre):
@@ -202,20 +192,20 @@ def analyse_pressure(pressure, t):
         time_vals = time_vals[1:] + [t]
 
         # Calculate line of best fit
-        line = numpy.polyfit(time_vals, pressure_vals, 1, full=True)
+        line = np.polyfit(time_vals, pressure_vals, 1, full=True)
 
         # Calculate slope, variance, and confidence
         slope = line[0][0]
         intercept = line[0][1]
-        variance = numpy.var(pressure_vals)
-        residuals = numpy.var([(slope * x + intercept - y) for x, y in zip(time_vals, pressure_vals)])
+        variance = np.var(pressure_vals)
+        residuals = np.var([(slope * x + intercept - y) for x, y in zip(time_vals, pressure_vals)])
         r_squared = 1 - residuals / variance
 
         # Calculate change in pressure per hour
         change_per_hour = slope * 60 * 60
         # variance_per_hour = variance * 60 * 60
 
-        mean_pressure = numpy.mean(pressure_vals)
+        mean_pressure = np.mean(pressure_vals)
 
         # Calculate trend
         if r_squared > 0.5:
@@ -232,7 +222,7 @@ def analyse_pressure(pressure, t):
     else:
         pressure_vals.append(pressure)
         time_vals.append(t)
-        mean_pressure = numpy.mean(pressure_vals)
+        mean_pressure = np.mean(pressure_vals)
         change_per_hour = 0
         trend = "-"
 

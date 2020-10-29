@@ -8,10 +8,6 @@ camera.resolution = (2592, 1944)
 camera.rotation = 180
 
 
-def set_rotation(i):
-    camera.rotation = i
-
-
 def capture_pic(folder=DEFAULT_FOLDER, name=None):
     global camera
     if camera.closed:
@@ -28,7 +24,6 @@ def capture_stream_pic(stream):
     if camera.closed:
         camera = PiCamera()
     camera.capture(stream, format='jpeg')
-        
 
 
 def calcular_tiempo_time_lapse(cant_fotos, tiempo_entre_foto):
@@ -46,9 +41,9 @@ def time_lapse(cant_fotos, tiempo_entre_foto, folder=DEFAULT_FOLDER):
     camera.close()
 
 
-def start_preview(time=5):
+def start_preview(time=5, fullscreen=False):
     camera.resolution = (1920, 1080)
-    camera.start_preview()
+    camera.start_preview(fullscreen = fullscreen, window=(0,0,640, 480))    
     sleep(time)
     if not time == 0:
         camera.stop_preview()
@@ -91,3 +86,7 @@ def show_exposure(time=2):
 
 def fecha_formateada():
     return str(datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S"))
+
+
+def zoomear(x, y, w, h):
+    camera.zoom = (x, y, w, h)

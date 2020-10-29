@@ -1,15 +1,17 @@
 import time
 import pantilthat
-# import ../camera/time_lapse_captures as cam
-# https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 import threading
 import keyboard
 import sys
-import time_lapse_captures as cam
 import cv2 as cv
 import imutils
 import io
 import numpy
+
+import importlib.util
+spec = importlib.util.spec_from_file_location("module.name", "../camera/camera.py")
+cam = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cam)
 
 # FOLDER = "/root/Desktop/New/"  # ROOT
 FOLDER = "/home/pi/Desktop/"   # PI USER
@@ -23,6 +25,7 @@ speed = 4
 
 #Create a memory stream so photos doesn't need to be saved in a file
 stream = io.BytesIO()
+
 
 def cam_preview(start=0):
     cam.start_preview(start)
