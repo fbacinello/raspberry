@@ -3,8 +3,8 @@ import logger_csv
 import threading
 from time import sleep
 import numpy as np
-import sensors
-import display as pantalla
+from enviro.components import sensors
+from enviro.components import display as pantalla
 
 import os
 import time
