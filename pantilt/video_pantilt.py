@@ -70,28 +70,12 @@ def log():
     print('h', pos_pan, 'v', pos_tilt)
 
 
-def on_press_handler(event):
-    timestamp = event.time
-    global last_touch
-    global delay
-    if not timestamp - last_touch > delay:
-        print('muy rapido')
-        pass
-    else:
-        last_touch = timestamp
-
-        key = event.name
-        if key in ('left', 'right'):
-            mover_horizontal(key)
-        if key in ('up', 'down'):
-            mover_vertical(key)
-        if key == 'esc':
-            global bandera
-            bandera = False        
-            volver_posicion()
-            sys.exit()
-    
-        log()
+def salir():
+    volver_posicion()
+    pygame.quit()
+    cap.release()
+    cv.destroyAllWindows()
+    sys.exit()
 
 
 def mover_pygame():
@@ -103,23 +87,26 @@ def mover_pygame():
 
     for eve in pygame.event.get():
         if eve.type == pygame.QUIT:
-            volver_posicion()            
-            pygame.quit()
-            sys.exit()
+            salir()
 
     key_input = pygame.key.get_pressed()   
     if key_input[pygame.K_LEFT]:
         p1 -= step
         mover_horizontal('left')
-    if key_input[pygame.K_UP]:
-        p2 -= step
-        mover_vertical('up')
     if key_input[pygame.K_RIGHT]:
         p1 += step
         mover_horizontal('right')
+
+    if key_input[pygame.K_UP]:
+        p2 -= step
+        mover_vertical('up')
     if key_input[pygame.K_DOWN]:
         p2 += step
         mover_vertical('down')
+
+    if key_input[pygame.K_ESCAPE]:
+        salir()
+
     pygame.display.update()
     fpsclock.tick(fps)
     log()
@@ -146,6 +133,3 @@ while True:
         break
 
     mover_pygame()
-
-cap.release()
-cv.destroyAllWindows()
