@@ -1,7 +1,5 @@
 from __future__ import print_function
 import cv2 as cv
-import argparse
-
 
 def detectAndDisplay(frame):
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -50,8 +48,9 @@ while True:
     fps = cap.get(5)
     cv.putText(frame, str(fps), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
 
-    detectAndDisplay(frame)
-
+    # frame = imutils.rotate(frame, 135)
+    # detectAndDisplay(frame)
+    cv.imshow('Capture - Face detection', frame)
     if cv.waitKey(1) == ord('q'):
         break
 

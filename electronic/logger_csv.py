@@ -19,8 +19,10 @@ class Logger:
     def log_data(self):
         """log data into csv file"""
 
+        # ACA LE SAQUE LO DE LA FECHA QUE TIENE LO DEL ENVIRO
+        # TENDRIA QUE VER COMO UNIFICAR ESAS DOS COSAS
         for file, data in self.data_dict.items():
-            path = "data/" + file + datetime.now().strftime('%d_%m_%Y') + ".csv"
+            path = "data/" + file + ".csv"
             self.file_exist(file, path)
             with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
@@ -31,3 +33,12 @@ class Logger:
             with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=self.data_dict[source].keys())
                 writer.writeheader()
+
+
+def main():
+    logger = Logger()
+    logger.collect_data()  # va a fallar aca
+    logger.log_data()
+    logger.print_data()
+
+# main()

@@ -71,6 +71,10 @@ class Display:
         # The position of the top bar
         self.top_pos = 25
 
+        # Parametros lucinocidad
+        self.intencidad = [0, 0, 0.5, 10]
+        self.escalas = [0, 4, 12, 1000]
+
     def random_pixel(self):
         self.img.putpixel((randint(0, self.WIDTH - 1), randint(0, self.HEIGHT - 1)),
                           (randint(0, 255), randint(0, 255), randint(0, 255)))
@@ -161,3 +165,14 @@ class Display:
         if not self.display_prendido and not self.apagar_display:
             self.turn_on()
             self.display_prendido = True
+
+    def prender_apagar_por_luminocidad(self, lux):
+        if lux > 0:
+            self.turn_on()
+            self.display_prendido = True
+        else:
+            self.turn_off()
+            self.display_prendido = False
+
+    def display(self, img):
+        self.st7735.display(img)

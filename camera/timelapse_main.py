@@ -1,4 +1,4 @@
-import time_lapse_captures as cam
+import camera as cam
 
 PREVIEW = True
 CANT_FOTOS = 30
