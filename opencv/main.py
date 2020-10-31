@@ -20,7 +20,7 @@ buff = numpy.frombuffer(stream.getvalue(), dtype=numpy.uint8)
 image = cv2.imdecode(buff, 1)
 
 # Load a cascade file for detecting faces
-face_cascade = cv2.CascadeClassifier('./xml/haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('./data/haarcascades/haarcascade_frontalface_default.xml')
 
 # Convert to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
