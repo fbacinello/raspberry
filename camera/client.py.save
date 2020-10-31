@@ -2,6 +2,7 @@ import socket
 import time
 import picamera
 
+<<<<<<< HEAD
 # Connect a client socket to my_server:8000 (change my_server to the
 # hostname of your server)
 client_socket = socket.socket()
@@ -24,3 +25,11 @@ try:
 finally:
     connection.close()
     client_socket.close()
+stop
+        camera.start_recording(connection, format='h264')
+        camera.wait_recording(60)
+        camera.stop_recording()
+    finally:
+        connection.close()
+        client_socket.close()
+
