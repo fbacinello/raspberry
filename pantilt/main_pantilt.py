@@ -1,35 +1,42 @@
 import time
 import pantilthat
-import time_lapse_captures as cam
-# import ../camera/time_lapse_captures as cam
-# https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 import threading
 import keyboard
 import sys
+import cv2 as cv
+import imutils
+import io
+import numpy
+
+import importlib.util
+spec = importlib.util.spec_from_file_location("module.name", "../camera/camera.py")
+cam = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cam)
+
+# FOLDER = "/root/Desktop/New/"  # ROOT
+FOLDER = "/home/pi/Desktop/"   # PI USER
 
 pos_tilt = -90
 pos_pan = -90
 bandera = True
-delay = 0.05
+delay = 0.1
 last_touch = 0
-speed = 2
+speed = 4
+
+#Create a memory stream so photos doesn't need to be saved in a file
+stream = io.BytesIO()
 
 
 def cam_preview(start=0):
     cam.start_preview(start)
 
 
-def cam_stop():
-    cam.stop_preview()
-
-
-def mover_pan(i):    
+def mover_pan(i):
     pantilthat.pan(int(i))
-    
 
 
-def mover_tilt(i):    
-    pantilthat.tilt(int(i))    
+def mover_tilt(i):
+    pantilthat.tilt(int(i))
 
 
 def mover_horizontal(direccion):
@@ -39,7 +46,8 @@ def mover_horizontal(direccion):
         pos_pan -= speed
     if direccion == 'left' and pos_pan < 90:
         pos_pan += speed
-    mover_pan(pos_pan)    
+
+    mover_pan(pos_pan)
 
 
 def mover_vertical(direccion):
@@ -52,7 +60,7 @@ def mover_vertical(direccion):
     mover_tilt(pos_tilt)
 
 
-def volver_posicion():    
+def volver_posicion():
     global pos_tilt
     for i in range(pos_tilt, -90, -1):
         time.sleep(0.01)
@@ -80,7 +88,6 @@ def on_press_handler(event):
         pass
     else:
         last_touch = timestamp
-    
 
         key = event.name
         if key in ('left', 'right'):
@@ -89,21 +96,33 @@ def on_press_handler(event):
             mover_vertical(key)
         if key == 'esc':
             global bandera
-            bandera = False        
+            bandera = False
             volver_posicion()
             sys.exit()
-    
+        if key == 'enter':
+            fecha = cam.fecha_formateada()
+            pic_name = fecha + '.jpg'
+            cam.capture_pic(FOLDER, pic_name)
+
+            cam.capture_stream_pic(stream)
+            # Convert the picture into a numpy array
+            buff = numpy.frombuffer(stream.getvalue(), dtype=numpy.uint8)
+
+            # Now creates an OpenCV image
+            image = cv.imdecode(buff, 1)
+            pic_rot_name = 'rot' + fecha + '.jpg'
+
+            rot_image = imutils.rotate(image, 180 - pos_pan)
+
+# Save the result image
+            cv.imwrite(FOLDER + pic_rot_name, rot_image)
+
         log()
 
 
-
-
 keyboard.on_press(on_press_handler)
-
-x = threading.Thread(target=cam_preview, args=[15])
+x = threading.Thread(target=cam_preview, args=[1])
 x.start()
-time.sleep(0.5)
-
 
 while bandera:
     pass

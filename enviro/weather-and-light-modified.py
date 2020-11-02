@@ -1,26 +1,21 @@
 #!/usr/bin/env python3
+import logger_csv
+import threading
+from time import sleep
+import numpy as np
+from enviro.components import sensors
+from enviro.components import display as pantalla
 
 import os
 import time
-import numpy
 import colorsys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from fonts.ttf import RobotoMedium as UserFont
 
-import ST7735
-from bme280 import BME280
-from ltr559 import LTR559
-
 import pytz
-from pytz import timezone
 from astral.geocoder import database, lookup
 from astral.sun import sun
 from datetime import datetime, timedelta
-
-try:
-    from smbus2 import SMBus
-except ImportError:
-    from smbus import SMBus
 
 
 def calculate_y_pos(x, centre):
@@ -190,19 +185,6 @@ def overlay_text(img, position, text, font, align_right=False, rectangle=False):
     return img
 
 
-def get_cpu_temperature():
-    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
-        temp = f.read()
-        temp = int(temp) / 1000.0
-    return temp
-
-
-def correct_humidity(humidity, temperature, corr_temperature):
-    dewpoint = temperature - ((100 - humidity) / 5)
-    corr_humidity = 100 - (5 * (corr_temperature - dewpoint))
-    return min(100, corr_humidity)
-
-
 def analyse_pressure(pressure, t):
     global time_vals, pressure_vals, trend
     if len(pressure_vals) > num_vals:
@@ -210,20 +192,20 @@ def analyse_pressure(pressure, t):
         time_vals = time_vals[1:] + [t]
 
         # Calculate line of best fit
-        line = numpy.polyfit(time_vals, pressure_vals, 1, full=True)
+        line = np.polyfit(time_vals, pressure_vals, 1, full=True)
 
         # Calculate slope, variance, and confidence
         slope = line[0][0]
         intercept = line[0][1]
-        variance = numpy.var(pressure_vals)
-        residuals = numpy.var([(slope * x + intercept - y) for x, y in zip(time_vals, pressure_vals)])
+        variance = np.var(pressure_vals)
+        residuals = np.var([(slope * x + intercept - y) for x, y in zip(time_vals, pressure_vals)])
         r_squared = 1 - residuals / variance
 
         # Calculate change in pressure per hour
         change_per_hour = slope * 60 * 60
         # variance_per_hour = variance * 60 * 60
 
-        mean_pressure = numpy.mean(pressure_vals)
+        mean_pressure = np.mean(pressure_vals)
 
         # Calculate trend
         if r_squared > 0.5:
@@ -240,7 +222,7 @@ def analyse_pressure(pressure, t):
     else:
         pressure_vals.append(pressure)
         time_vals.append(t)
-        mean_pressure = numpy.mean(pressure_vals)
+        mean_pressure = np.mean(pressure_vals)
         change_per_hour = 0
         trend = "-"
 
@@ -287,21 +269,6 @@ def describe_light(light):
     return description
 
 
-# Initialise the LCD
-disp = ST7735.ST7735(
-    port=0,
-    cs=1,
-    dc=9,
-    backlight=12,
-    rotation=270,
-    spi_speed_hz=10000000
-)
-
-disp.begin()
-
-WIDTH = disp.width
-HEIGHT = disp.height
-
 # The city and timezone that you want to display.
 city_name = "Madrid"
 time_zone = "Europe/Madrid"
@@ -322,19 +289,8 @@ font_lg = ImageFont.truetype(UserFont, 14)
 # Margins
 margin = 3
 
-
-# Set up BME280 weather sensor
-bus = SMBus(1)
-bme280 = BME280(i2c_dev=bus)
-
 min_temp = None
 max_temp = None
-
-factor = 2.25
-cpu_temps = [get_cpu_temperature()] * 5
-
-# Set up light sensor
-ltr559 = LTR559()
 
 # Pressure variables
 pressure_vals = []
@@ -346,6 +302,71 @@ trend = "-"
 # Keep track of time elapsed
 start_time = time.time()
 
+# ########################## CODIGO QUE METI YO ##########################
+
+# Create a values dict to store the data
+variables = ["temperature",
+             "pressure",
+             "humidity",
+             "light"]
+values = {}
+
+
+# Saves the data into an array
+def save_data(idx, data):
+    variable = variables[idx]
+    # Maintain length of list and add the new value
+    values[variable] = np.append(values[variable][1:], [data])
+
+
+def save_all_data(temp, press, humi, ligh):
+    save_data(0, temp)
+    save_data(1, press)
+    save_data(2, humi)
+    save_data(3, ligh)
+
+
+def inicializar_variables_data():
+    for v in variables:
+        values[v] = np.ones(160)
+
+
+# Logger
+LOG = True
+
+
+def log():
+    global LOG
+    logger = logger_csv.Logger()
+    while LOG:
+        dic_enviro = {'time': datetime.now(),
+                      'temp': values['temperature'][-1],
+                      'humi': values['humidity'][-1],
+                      'pres': values['pressure'][-1]}
+        logger.collect_data('enviro_not_suav_pres', dic_enviro)
+
+        dic_enviro_suav = {'time': datetime.now(),
+                           'temp': values['temperature'][-60:].mean(),
+                           'humi': values['humidity'][-60:].mean(),
+                           'pres': values['pressure'][-60:].mean()}
+        logger.collect_data('dic_enviro_suav_pres', dic_enviro_suav)
+
+        # dic_noise = {'time': datetime.now(), '100-200': noise[0], '500-600': noise[1],
+        #             '1000-1200': noise[2], '2000-3000': noise[3]}
+        # logger.collect_data('noise', dic_noise)
+
+        logger.log_data()
+        print("Logging")
+        sleep(60)
+
+
+def retardar_logger():
+    # Los primeros datos del sensor estan mal asi que no los guardo
+    global LOG
+    sleep(30)
+    t_logger = threading.Thread(target=log)
+    t_logger.start()
+
 
 def apagar_luz_active():
     with open("/sys/class/leds/led0/brightness", "w") as f:
@@ -353,9 +374,29 @@ def apagar_luz_active():
 
 
 apagar_luz_active()
+inicializar_variables_data()
+
+t_logger = threading.Thread(target=retardar_logger)
+t_logger.start()
+
+sensor = sensors.Sensors()
+
+display = pantalla.Display(rotation=270)
+WIDTH = display.WIDTH
+HEIGHT = display.HEIGHT
+
+delay = 0.5  # Debounce the proximity tap
+ultimo_toque = 0  # cuando se hizo el ultimo toque
+# ########################################################################
 
 
 while True:
+    proximity = sensor.get_proximity()
+
+    if proximity > 1500 and time.time() - ultimo_toque > delay:
+        ultimo_toque = time.time()
+        display.prender_apagar()
+
     path = os.path.dirname(os.path.realpath(__file__))
     progress, period, day, local_dt = sun_moon_time(city_name, time_zone)
     background = draw_background(progress, period, day)
@@ -368,13 +409,8 @@ while True:
     img = overlay_text(img, (WIDTH - margin, 0 + margin), date_string, font_lg, align_right=True)
 
     # Temperature
-    temperature = bme280.get_temperature()
-
-    # Corrected temperature
-    cpu_temp = get_cpu_temperature()
-    cpu_temps = cpu_temps[1:] + [cpu_temp]
-    avg_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
-    corr_temperature = temperature - ((avg_cpu_temp - temperature) / factor)
+    temperature = sensor.get_temperature()
+    corr_temperature = sensor.get_correct_temperature()
 
     if time_elapsed > 30:
         if min_temp is not None and max_temp is not None:
@@ -398,8 +434,9 @@ while True:
     img.paste(temp_icon, (margin, 18), mask=temp_icon)
 
     # Humidity
-    humidity = bme280.get_humidity()
-    corr_humidity = correct_humidity(humidity, temperature, corr_temperature)
+    humidity = sensor.get_humidity()
+    corr_humidity = sensor.get_correct_humidity()
+
     humidity_string = f"{corr_humidity:.0f}%"
     img = overlay_text(img, (68, 48), humidity_string, font_lg, align_right=True)
     spacing = font_lg.getsize(humidity_string)[1] + 1
@@ -409,7 +446,8 @@ while True:
     img.paste(humidity_icon, (margin, 48), mask=humidity_icon)
 
     # Light
-    light = ltr559.get_lux()
+    light = sensor.get_lux()
+
     light_string = f"{int(light):,}"
     img = overlay_text(img, (WIDTH - margin, 18), light_string, font_lg, align_right=True)
     spacing = font_lg.getsize(light_string.replace(",", ""))[1] + 1
@@ -419,7 +457,8 @@ while True:
     img.paste(humidity_icon, (80, 18), mask=light_icon)
 
     # Pressure
-    pressure = bme280.get_pressure()
+    pressure = sensor.get_pressure()
+
     t = time.time()
     mean_pressure, change_per_hour, trend = analyse_pressure(pressure, t)
     pressure_string = f"{int(mean_pressure):,} {trend}"
@@ -431,4 +470,6 @@ while True:
     img.paste(pressure_icon, (80, 48), mask=pressure_icon)
 
     # Display image
-    disp.display(img)
+    display.display(img)
+
+    save_all_data(corr_temperature, pressure, corr_humidity, light)

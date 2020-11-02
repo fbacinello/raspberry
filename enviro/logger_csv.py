@@ -31,12 +31,3 @@ class Logger:
             with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=self.data_dict[source].keys())
                 writer.writeheader()
-
-
-def main():
-    logger = Logger()
-    logger.collect_data()  # va a fallar aca
-    logger.log_data()
-    logger.print_data()
-
-# main()

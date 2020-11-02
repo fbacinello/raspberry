@@ -40,7 +40,7 @@ noise = [[0, 0, 0, 0]]
 values = {}
 
 # Logger
-LOG = False
+LOG = True
 
 
 def log():
@@ -108,6 +108,9 @@ def main():
                 ultimo_toque = time.time()
                 # display.prender_apagar() Lo comento porque tengo activado el por luminocidad
 
+            brillo_prom = values['light'][-60:].mean()
+            display.prender_apagar_por_luminocidad(brillo_prom)
+
             # Everything on one screen
             raw_data = sensor.get_temperature()
             save_data(0, raw_data)
@@ -125,8 +128,6 @@ def main():
             save_data(3, raw_data)
 
             display.display_everything(variables, values, units)
-            brillo_prom = values['light'][-60:].mean()
-            display.prender_apagar_por_luminocidad(brillo_prom)
 
     # Exit cleanly
     except KeyboardInterrupt:

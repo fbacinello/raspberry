@@ -173,3 +173,6 @@ class Display:
         else:
             self.turn_off()
             self.display_prendido = False
+
+    def display(self, img):
+        self.st7735.display(img)
