@@ -15,7 +15,6 @@ try:
     cmdline = ['C:\Program Files (x86)\VideoLAN\VLC\Vlc.exe', '--demux', 'h264', '-']
 
     # cmdline = ['C:\Program Files (x86)\Windows Media Player\wmplayer.exe', '-fps', '25', '-cache', '1024', '-']
->>>>>>> a8623a459fa7da9f5c93144edbb09aa07791d85b
     player = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
     while True:
         # Repeatedly read 1k of data from the connection and write it to
