@@ -1,6 +1,7 @@
 from time import sleep
 import board
 import neopixel
+import threading
 
 # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
 # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
@@ -17,12 +18,28 @@ num_pixels = 100
 ORDER = neopixel.GRB
 
 pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
+    pixel_pin, num_pixels, brightness=1, auto_write=False, pixel_order=ORDER
 )
+
+
+def latir():
+    while True:
+        for i in range(1, 10, 1):
+            pixels.brightness = i/10
+            sleep(0.1)
+
+        for i in range(10, 1, -1):
+            pixels.brightness = i/10
+            sleep(0.1)
+
 
 def apagar():
     pixels.fill((0, 0, 0))
     pixels.show()
+
+
+t_latir = threading.Thread(target=latir)
+t_latir.start()
 
 # pixels = neopixel.NeoPixel(board.D18, 300, brightness=1)
 pixels.fill((0, 255, 0))
@@ -35,12 +52,10 @@ for i in range(num_pixels):
     pixels.show()
     sleep(0.05)
 
-for i in range(num_pixels, 0, -1):
+for i in range(num_pixels -1, 0, -1):
     print(i)
     pixels[i] = (0, 255, 0)
     pixels.show()
     sleep(0.05)
 
-
-pixels.fill((0, 0, 0))
-pixels.show()
+apagar()
