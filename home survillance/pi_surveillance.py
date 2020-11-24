@@ -10,7 +10,7 @@ import imutils
 import json
 import time
 import cv2
-from ..pantilt import pantilt
+from ..pantilt.pantilt import PanTilt
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
