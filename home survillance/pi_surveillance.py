@@ -18,7 +18,6 @@ args = vars(ap.parse_args())
 # filter warnings, load the configuration and initialize the Dropbox
 # client
 warnings.filterwarnings("ignore")
-print(args["conf"])
 if args["conf"]:
     conf = json.load(open(args["conf"]))
 else:
@@ -36,6 +35,7 @@ if conf["use_dropbox"]:
 camera = PiCamera()
 camera.resolution = tuple(conf["resolution"])
 camera.framerate = conf["fps"]
+camera.rotation = conf["rotation"]
 rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
 # allow the camera to warmup, then initialize the average frame, last
 # uploaded timestamp, and frame motion counter
