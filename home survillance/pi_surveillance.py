@@ -1,6 +1,7 @@
 # https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/
 
 from pyimagesearch.tempimage import TempImage
+from pyimagesearch.pantilt import PanTilt
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import argparse
