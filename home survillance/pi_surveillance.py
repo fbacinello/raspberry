@@ -11,7 +11,6 @@ import imutils
 import json
 import time
 import cv2
-from ..pantilt.pantilt import PanTilt
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -46,6 +45,9 @@ time.sleep(conf["camera_warmup_time"])
 avg = None
 lastUploaded = datetime.datetime.now()
 motionCounter = 0
+
+pan = PanTilt()
+pan.run()
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
