@@ -4,14 +4,6 @@ import threading
 from time import sleep
 
 
-def mover_pan(i):
-    pantilthat.pan(int(i))
-
-
-def mover_tilt(i):
-    pantilthat.tilt(int(i))
-
-
 class PanTilt:
     def __init__(self):
         self.pos_tilt = -90
@@ -31,30 +23,36 @@ class PanTilt:
         self.p2 = 10
         self.step = 5
 
+    def mover_pan(self, i):
+        pantilthat.pan(int(i))
+
+    def mover_tilt(self, i):
+        pantilthat.tilt(int(i))
+
     def mover_horizontal(self, direccion):
         if direccion == 'right' and self.pos_pan > -90:
             self.pos_pan -= self.speed
         if direccion == 'left' and self.pos_pan < 90:
             self.pos_pan += self.speed
-        mover_pan(self.pos_pan)
+        self.mover_pan(self.pos_pan)
 
     def mover_vertical(self, direccion):
         if direccion == 'up' and self.pos_tilt > -90:
             self.pos_tilt -= self.speed
         if direccion == 'down' and self.pos_tilt < 90:
             self.pos_tilt += self.speed
-        mover_tilt(self.pos_tilt)
+        self.mover_tilt(self.pos_tilt)
 
     def volver_posicion(self):
         for i in range(self.pos_tilt, -90, -1):
             sleep(0.01)
             self.pos_tilt = i
-            mover_tilt(i)
+            self.mover_tilt(i)
 
         for i in range(self.pos_pan, -90, -1):
             sleep(0.01)
             self.pos_pan = i
-            mover_pan(i)
+            self.mover_pan(i)
 
     def log(self):
         print('h', self.pos_pan, 'v', self.pos_tilt)
