@@ -1,13 +1,11 @@
 # https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/
 
-# import the necessary packages
 from pyimagesearch.tempimage import TempImage
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import argparse
 import warnings
 import datetime
-import dropbox
 import imutils
 import json
 import time
@@ -29,6 +27,7 @@ client = None
 
 # check to see if the Dropbox should be used
 if conf["use_dropbox"]:
+    import dropbox
     # connect to dropbox and start the session authorization process
     client = dropbox.Dropbox(conf["dropbox_access_token"])
     print("[SUCCESS] dropbox account linked")
