@@ -1,7 +1,6 @@
 # https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/
 
 from pyimagesearch.tempimage import TempImage
-from pyimagesearch.pantilt import PanTilt
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import argparse
@@ -45,9 +44,6 @@ time.sleep(conf["camera_warmup_time"])
 avg = None
 lastUploaded = datetime.datetime.now()
 motionCounter = 0
-
-pan = PanTilt()
-pan.run()
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
