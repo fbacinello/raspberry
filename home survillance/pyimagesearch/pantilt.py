@@ -62,6 +62,7 @@ class PanTilt:
         pygame.draw.rect(self.sur_obj, (255, 0, 0), (self.p1, self.p2, 70, 65))
 
         key_input = pygame.key.get_pressed()
+        print(key_input)
         if key_input[pygame.K_LEFT]:
             self.p1 -= self.step
             self.mover_horizontal('left')
@@ -79,7 +80,12 @@ class PanTilt:
         pygame.display.update()
         self.fpsclock.tick(self.fps)
         self.log()
+    
+    def ciclo(self):
+        while True:
+            self.mover_pygame()
+            sleep(0.01)
 
     def run(self):
-        x = threading.Thread(target=self.mover_pygame)
+        x = threading.Thread(target=self.ciclo)
         x.start()

@@ -35,7 +35,7 @@ if conf["use_dropbox"]:
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = tuple(conf["resolution"])
-camera.framerate = conf["fps"]
+camera.framerate = 8
 camera.rotation = conf["rotation"]
 rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
 # allow the camera to warmup, then initialize the average frame, last
@@ -46,8 +46,7 @@ avg = None
 lastUploaded = datetime.datetime.now()
 motionCounter = 0
 
-pan = PanTilt()
-pan.run()
+
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -99,6 +98,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
     # check to see if the room is occupied
     if text == "Occupied":
+        print("Occupied", motionCounter)
         # check to see if enough time has passed between uploads
         if (timestamp - lastUploaded).seconds >= conf["min_upload_seconds"]:
             # increment the motion counter
@@ -126,7 +126,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
         motionCounter = 0
 
     # check to see if the frames should be displayed to screen
-    if conf["show_video"]:
+    if not conf["show_video"]:
         # display the security feed
         cv2.imshow("Security Feed", frame)
         key = cv2.waitKey(1) & 0xFF
