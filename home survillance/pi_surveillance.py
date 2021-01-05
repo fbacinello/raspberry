@@ -34,7 +34,7 @@ if conf["use_dropbox"]:
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = tuple(conf["resolution"])
-camera.framerate = 8
+camera.framerate = conf["fps"]
 camera.rotation = conf["rotation"]
 rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
 # allow the camera to warmup, then initialize the average frame, last
@@ -45,11 +45,6 @@ avg = None
 lastUploaded = datetime.datetime.now()
 motionCounter = 0
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> dd236079f225e049984caf1d0ee09f2092185504
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     # grab the raw NumPy array representing the image and initialize
@@ -128,7 +123,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
         motionCounter = 0
 
     # check to see if the frames should be displayed to screen
-    if not conf["show_video"]:
+    if conf["show_video"]:
         # display the security feed
         cv2.imshow("Security Feed", frame)
         key = cv2.waitKey(1) & 0xFF
