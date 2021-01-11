@@ -5,7 +5,7 @@ import socket
 import selectors
 import traceback
 
-import libclient
+import libclientbacho
 
 sel = selectors.DefaultSelector()
 
@@ -39,7 +39,7 @@ def start_connection(host, port, request):
     sock.setblocking(False)
     sock.connect_ex(addr)
     events = selectors.EVENT_READ | selectors.EVENT_WRITE
-    message = libclient.Message(sel, sock, addr, request)
+    message = libclientbacho.Message(sel, sock, addr, request)
     sel.register(sock, events, data=message)
 
 
