@@ -18,9 +18,12 @@ def create_request(action, value):
             content=dict(action=action, value=value),
         )
     if action == "excel":
+        file = open('../enviro/data/dic_enviro_suav01_09_2020.csv', 'rb')
+
         return dict(
             type="binary/custom-client-binary-type",
             encoding="binary",
+            # content=bytes(action + value, encoding="utf-8"),
             content=bytes(action + value, encoding="utf-8"),
         )
 

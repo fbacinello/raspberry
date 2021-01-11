@@ -75,7 +75,7 @@ class Message:
         return obj
 
     def _create_message(
-        self, *, content_bytes, content_type, content_encoding
+            self, *, content_bytes, content_type, content_encoding
     ):
         jsonheader = {
             "byteorder": sys.byteorder,
@@ -90,16 +90,18 @@ class Message:
 
     def _create_response_json_content(self):
         action = self.request.get("action")
-        print(action)
-        print(action)
+        print("**********************************************************************")
+        print("\naction")
         # deberia implementar un switch
         if action == "search":
             query = self.request.get("value")
             answer = request_search.get(query) or f'No match for "{query}".'
             content = {"result": answer}
         elif action == "excel":
+            print('excel')
             answer = self._create_response_binary_content()
             content = {"result": answer}
+            self.save_excel()
         else:
             content = {"result": f'Error: invalid action "{action}".'}
         content_encoding = "utf-8"
@@ -113,7 +115,7 @@ class Message:
     def _create_response_binary_content(self):
         response = {
             "content_bytes": b"First 10 bytes of request: "
-            + self.request[:10],
+                             + self.request[:10],
             "content_type": "binary/custom-server-binary-type",
             "content_encoding": "binary",
         }
@@ -183,10 +185,10 @@ class Message:
             )
             self._recv_buffer = self._recv_buffer[hdrlen:]
             for reqhdr in (
-                "byteorder",
-                "content-length",
-                "content-type",
-                "content-encoding",
+                    "byteorder",
+                    "content-length",
+                    "content-type",
+                    "content-encoding",
             ):
                 if reqhdr not in self.jsonheader:
                     raise ValueError(f'Missing required header "{reqhdr}".')
@@ -220,3 +222,14 @@ class Message:
         message = self._create_message(**response)
         self.response_created = True
         self._send_buffer += message
+
+    def save_excel(self):
+        print('Saving')
+        lines = ["Hello world.\n", "Welcome to TutorialsTeacher.\n"]
+        f = open("myfile.csv", "w")
+        f.writelines(lines)
+        f.close()
+        # f = open('my_file.csv', 'w+b')
+        # binary_format = bytearray(self.request.get("value"))
+        # f.write(binary_format)
+        # f.close()
