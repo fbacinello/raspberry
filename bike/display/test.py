@@ -2,17 +2,17 @@
 # -*- coding:utf-8 -*-
 import sys
 import os
+import logging
+import epd2in9_V2
+import time
+from PIL import Image, ImageDraw, ImageFont
+import traceback
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
 
-import logging
-import epd2in9_V2
-import time
-from PIL import Image, ImageDraw, ImageFont
-import traceback
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -64,7 +64,6 @@ try:
     time.sleep(2)
 
     logging.info("3.read bmp file")
-    Himage = Image.open(os.path.join(picdir, '2in9.bmp'))
     epd.display(epd.getbuffer(Himage))
     time.sleep(2)
 
@@ -81,7 +80,7 @@ try:
     time_draw = ImageDraw.Draw(time_image)
     epd.display_Base(epd.getbuffer(time_image))
     num = 0
-    while (True):
+    while True:
         time_draw.rectangle((10, 10, 120, 50), fill=255)
         time_draw.text((10, 10), time.strftime('%H:%M:%S'), font=font24, fill=0)
         newimage = time_image.crop([10, 10, 120, 50])
@@ -89,7 +88,7 @@ try:
         epd.display_Partial(epd.getbuffer(time_image))
 
         num = num + 1
-        if (num == 10):
+        if num == 10:
             break
 
     logging.info("Clear...")
