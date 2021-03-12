@@ -22,3 +22,11 @@ draw = ImageDraw.Draw(image)
 image.paste(plant_img, (14, -20))
 epd.display(epd.getbuffer(image))
 
+time.sleep(2)
+
+image2 = Image.new('1', (epd.height, epd.width), 0)
+plant_img = plant_img.resize((296, 128))
+draw2 = ImageDraw.Draw(image2)
+image2.paste(plant_img, (0, 0))
+epd.display(epd.getbuffer(image2))
+
