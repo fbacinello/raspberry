@@ -20,7 +20,7 @@ class Logger:
         """log data into csv file"""
 
         for file, data in self.data_dict.items():
-            path = "data/" + file + datetime.now().strftime('%d_%m_%Y') + ".csv"
+            path = "data_fem/" + datetime.now().strftime('%Y_%m_%d') + file + ".csv"
             self.file_exist(file, path)
             with open(path, 'a+', newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
