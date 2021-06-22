@@ -381,7 +381,7 @@ t_logger.start()
 
 sensor = sensors.Sensors()
 
-display = pantalla.Display(rotation=270)
+display = pantalla.Display(rotation=90)
 WIDTH = display.WIDTH
 HEIGHT = display.HEIGHT
 
