@@ -16,7 +16,7 @@ epd = epd2in9_V2.EPD()
 epd.init()
 epd.Clear(0xFF)
 
-plant_img = Image.open(os.path.join('../pic', 'plant.jpg'))
+plant_img = Image.open(os.path.join(picdir, 'fem.jpg'))
 image = Image.new('1', (epd.height, epd.width), 0)
 draw = ImageDraw.Draw(image)
 image.paste(plant_img, (14, -20))
