@@ -4,12 +4,16 @@ import time
 
 import logger_csv
 
+# Create a values dict to store the data
+variables = ["distance"]
+values_dic = {}
+
 
 # Saves the data into an array
 def save_data(idx, data):
     variable = variables[idx]
     # Maintain length of list and add the new value
-    values[variable] = np.append(values[variable][1:], [data])
+    values_dic[variable] = np.append(values_dic[variable][1:], [data])
 
 
 def save_all_data(distance):
@@ -19,13 +23,13 @@ def log():
     logger = logger_csv.Logger()
     
     dic_log = {'time': datetime.now(),
-               'distance': values['distance'][-1]}
+               'distance': values_dic['distance'][-1]}
     logger.collect_data('water_level', dic_log)
     logger.log_data()
 
 def inicializar_variables_data():
     for v in variables:
-        values[v] = np.ones(160)
+        values_dic[v] = np.ones(160)
 
 
 
