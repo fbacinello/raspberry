@@ -70,6 +70,7 @@ try:
       print ('Distance:',distance,'cm')
       
       save_all_data(distance)
+      log()
 
 finally:
       GPIO.cleanup()
