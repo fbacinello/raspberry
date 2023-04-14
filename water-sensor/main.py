@@ -25,6 +25,7 @@ def log():
     
     dic_log = {'time': datetime.now(),
                'distance': values_dic['distance'][-1]}
+    print(dic_log)
     logger.collect_data('water_level', dic_log)
     logger.log_data()
 
