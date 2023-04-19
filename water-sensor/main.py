@@ -6,10 +6,12 @@ from datetime import datetime
 
 import logger_csv
 
-# Create a values dict to store the data
-variables = ["distance"]
-values_dic = {}
 
+# -------  LOGGER METHODS -------
+
+# Create a values dict to store the data
+variables = ["distance", "litros"]
+values_dic = {}
 
 # Saves the data into an array
 def save_data(idx, data):
@@ -17,15 +19,16 @@ def save_data(idx, data):
     # Maintain length of list and add the new value
     values_dic[variable] = np.append(values_dic[variable][1:], [data])
 
-
-def save_all_data(distance):
+def save_all_data(distance, litros):
     save_data(0, distance)
+    save_data(1, litros)
 
 def log():
     logger = logger_csv.Logger()
     
     dic_log = {'time': datetime.now(),
-               'distance': values_dic['distance'][-1]}
+               'distance': values_dic['distance'][-1],
+               'litros': values_dic['litros'][-1]}
     print(dic_log)
     logger.collect_data('water_level', dic_log)
     logger.log_data()
@@ -34,7 +37,16 @@ def inicializar_variables_data():
     for v in variables:
         values_dic[v] = np.ones(160)
 
+# ---------------------------------
 
+def calcular_litros_agua(medicion_sensor):
+    dist_sensor_tope = 15
+    capacidad_tanque = 1000
+    distancia_entre_100_litros = 17
+
+    cant_litros = capacidad_tanque - (((medicion_sensor - dist_sensor_tope)/distancia_entre_100_litros)*100)
+
+    return cant_litros
 
 try:
       inicializar_variables_data()
@@ -69,8 +81,11 @@ try:
       pulse_duration = pulse_end_time - pulse_start_time
       distance = round(pulse_duration * 17150, 2)
       print ('Distance:',distance,'cm')
+
+      litros = calcular_litros_agua(distance)
+      print ('Cant litros: ', litros, ' litros')
       
-      save_all_data(distance)
+      save_all_data(distance, litros)
       log()
 
 finally:
