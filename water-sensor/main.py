@@ -45,7 +45,6 @@ def calcular_litros_agua(medicion_sensor):
     distancia_entre_100_litros = 17
 
     cant_litros = capacidad_tanque - (((medicion_sensor - dist_sensor_tope)/distancia_entre_100_litros)*100)
-
     return cant_litros
 
 try:
