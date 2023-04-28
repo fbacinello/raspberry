@@ -7,7 +7,7 @@ import sys
 import os
 import epd2in9_V2
 import time
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import logging
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
@@ -118,6 +118,19 @@ try:
       
     save_all_data(distance, litros)
     log()
+
+    print ('Imprimiendo pantalla')
+    fem_jpg = Image.open(os.path.join(picdir, 'fem.jpg'))
+    image = Image.new('1', (epd.height, epd.width), 0)
+    fem_jpg = fem_jpg.resize((296, 128))
+    fem_jpg = ImageEnhance.Contrast(fem_jpg)
+    fem_jpg = fem_jpg.enhance(2)
+    image.paste(fem_jpg, (0, 0))
+    epd.display(epd.getbuffer(fem_jpg))
+
+    draw = ImageDraw.Draw(image)
+
+
 
 finally:
       GPIO.cleanup()
