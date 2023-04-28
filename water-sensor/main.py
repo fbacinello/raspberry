@@ -1,17 +1,21 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
-import time
 import numpy as np
 from datetime import datetime
 
+import sys
+import os
 import epd2in9_V2
 import time
 from PIL import Image, ImageDraw, ImageFont
+import logging
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
 if os.path.exists(libdir):
     sys.path.append(libdir)
+
+logging.basicConfig(level=logging.DEBUG)
 
 import logger_csv
 
@@ -22,11 +26,13 @@ import logger_csv
 variables = ["distance", "litros"]
 values_dic = {}
 
+
 # Saves the data into an array
 def save_data(idx, data):
     variable = variables[idx]
     # Maintain length of list and add the new value
     values_dic[variable] = np.append(values_dic[variable][1:], [data])
+
 
 def save_all_data(distance, litros):
     save_data(0, distance)
@@ -72,10 +78,14 @@ try:
     inicializar_variables_data()
       
     GPIO.setmode(GPIO.BOARD)
+    #GPIO.setmode(GPIO.BCM)
 
     PIN_TRIGGER = 7
     # PIN_ECHO = 11 # Raspberry pi 3
     PIN_ECHO = 13 # Raspberry pi Zero
+
+    #PIN_TRIGGER = 4  # BMC
+    #PIN_ECHO = 27  # BMC
 
     GPIO.setup(PIN_TRIGGER, GPIO.OUT)
     GPIO.setup(PIN_ECHO, GPIO.IN)
@@ -94,10 +104,14 @@ try:
 
     GPIO.output(PIN_TRIGGER, GPIO.LOW)
 
-    while GPIO.input(PIN_ECHO)==0:
-          pulse_start_time = time.time()
-    while GPIO.input(PIN_ECHO)==1:
-          pulse_end_time = time.time()
+    print('a')
+
+    while GPIO.input(PIN_ECHO) == 0:
+        print('b')
+        pulse_start_time = time.time()
+    while GPIO.input(PIN_ECHO) == 1:
+        pulse_end_time = time.time()
+        print('c')
 
     pulse_duration = pulse_end_time - pulse_start_time
     distance = round(pulse_duration * 17150, 2)
