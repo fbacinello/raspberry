@@ -1,41 +1,15 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
 import time
-
 import logger_csv
 
 
-# Saves the data into an array
-def save_data(idx, data):
-    variable = variables[idx]
-    # Maintain length of list and add the new value
-    values[variable] = np.append(values[variable][1:], [data])
-
-
-def save_all_data(distance):
-    save_data(0, distance)
-
-def log():
-    logger = logger_csv.Logger()
-
-    dic_log = {'time': datetime.now(),
-               'distance': values['distance'][-1]}
-    logger.collect_data('water_level', dic_log)
-    logger.log_data()
-
-def inicializar_variables_data():
-    for v in variables:
-        values[v] = np.ones(160)
-
-
-
 try:
-      inicializar_variables_data()
 
       GPIO.setmode(GPIO.BOARD)
 
       PIN_TRIGGER = 7
-      PIN_ECHO = 11
+      PIN_ECHO = 13
 
       GPIO.setup(PIN_TRIGGER, GPIO.OUT)
       GPIO.setup(PIN_ECHO, GPIO.IN)
@@ -62,8 +36,6 @@ try:
       pulse_duration = pulse_end_time - pulse_start_time
       distance = round(pulse_duration * 17150, 2)
       print ('Distance:',distance,'cm')
-
-      save_all_data(distance)
 
 finally:
       GPIO.cleanup()
