@@ -60,7 +60,7 @@ def calcular_litros_agua(medicion_sensor):
     distancia_entre_100_litros = 17
 
     cant_litros = capacidad_tanque - (((medicion_sensor - dist_sensor_tope)/distancia_entre_100_litros)*100)
-    return round(cant_litros, 2)
+    return round(cant_litros, 0)
 
 try:
     logging.info("epd2in9 V2 Demo")
@@ -104,14 +104,10 @@ try:
 
     GPIO.output(PIN_TRIGGER, GPIO.LOW)
 
-    print('a')
-
     while GPIO.input(PIN_ECHO) == 0:
-        print('b')
         pulse_start_time = time.time()
     while GPIO.input(PIN_ECHO) == 1:
         pulse_end_time = time.time()
-        print('c')
 
     pulse_duration = pulse_end_time - pulse_start_time
     distance = round(pulse_duration * 17150, 2)
