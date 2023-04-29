@@ -131,19 +131,22 @@ try:
 
     print('Waiting for sensor to settle')
     time.sleep(2)
+    
+    while True:
+        distance = medir_distancia()
+        text_distance = "Distancia: {} cm".format(distance)
+        print(text_distance)
 
-    distance = medir_distancia()
-    text_distance = "Distancia: {} cm".format(distance)
-    print(text_distance)
+        litros = calcular_litros_agua(distance)
+        text_litros = "Cant litros: {} litros".format(litros)
+        print(text_litros)
 
-    litros = calcular_litros_agua(distance)
-    text_litros = "Cant litros: {} litros".format(litros)
-    print(text_litros)
-      
-    save_all_data(distance, litros)
-    log()
+        save_all_data(distance, litros)
+        log()
 
-    mostrar_en_pantalla(text_distance, text_litros)
+        mostrar_en_pantalla(text_distance, text_litros)
+
+        time.sleep(60)
 
 finally:
       GPIO.cleanup()
