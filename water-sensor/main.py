@@ -111,26 +111,31 @@ try:
 
     pulse_duration = pulse_end_time - pulse_start_time
     distance = round(pulse_duration * 17150, 2)
-    print ('Distance:',distance,'cm')
+    text_distance = "Distancia: {} cm".format(distance)
+    print(text_distance)
 
     litros = calcular_litros_agua(distance)
-    print ('Cant litros: ', litros, ' litros')
+    text_litros = "Cant litros: {} litros".format(litros)
+    print(text_litros)
       
     save_all_data(distance, litros)
     log()
 
-    print ('Imprimiendo pantalla')
+    print('Imprimiendo pantalla')
     fem_jpg = Image.open(os.path.join(picdir, 'fem.jpg'))
     image = Image.new('1', (epd.height, epd.width), 0)
     fem_jpg = fem_jpg.resize((296, 128))
     fem_jpg = ImageEnhance.Contrast(fem_jpg)
     fem_jpg = fem_jpg.enhance(2)
     image.paste(fem_jpg, (0, 0))
-    epd.display(epd.getbuffer(fem_jpg))
+    print('Imprimir solo FEM')
+    epd.display(epd.getbuffer(image))
 
+    print('Imprimir datos')
     draw = ImageDraw.Draw(image)
-
-
+    draw.text((2, 90), text_distance, font=font18, fill=1)
+    draw.text((2, 108), text_litros, font=font18, fill=1)
+    epd.display(epd.getbuffer(image))
 
 finally:
       GPIO.cleanup()
