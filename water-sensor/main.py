@@ -6,7 +6,6 @@ from datetime import datetime
 import sys
 import os
 
-from pexpect.ANSI import term
 
 import epd2in9_V2
 import time
@@ -131,7 +130,7 @@ try:
 
     print('Waiting for sensor to settle')
     time.sleep(2)
-    
+
     while True:
         distance = medir_distancia()
         text_distance = "Distancia: {} cm".format(distance)
