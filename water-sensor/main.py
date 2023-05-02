@@ -83,7 +83,7 @@ def medir_distancia():
     return round(pulse_duration * 17150, 2)
 
 
-def mostrar_en_pantalla(text_distance, text_litros):
+def mostrar_en_pantalla(text_distance, text_litros, girar_180_grados = False):
     print('Imprimiendo pantalla')
     fem_jpg = Image.open(os.path.join(picdir, 'fem.jpg'))
     image = Image.new('1', (epd.height, epd.width), 0)
@@ -91,13 +91,17 @@ def mostrar_en_pantalla(text_distance, text_litros):
     fem_jpg = ImageEnhance.Contrast(fem_jpg)
     fem_jpg = fem_jpg.enhance(2)
     image.paste(fem_jpg, (0, 0))
-    print('Imprimir solo FEM')
-    epd.display(epd.getbuffer(image))
+    # print('Imprimir solo FEM')
+    # epd.display(epd.getbuffer(image))
 
     print('Imprimir datos')
     draw = ImageDraw.Draw(image)
     draw.text((2, 90), text_distance, font=font18, fill=1)
     draw.text((2, 108), text_litros, font=font18, fill=1)
+
+    if girar_180_grados:
+        image = image.transpose(method=Image.ROTATE_180)
+
     epd.display(epd.getbuffer(image))
 
 
@@ -115,14 +119,9 @@ try:
     inicializar_variables_data()
       
     GPIO.setmode(GPIO.BOARD)
-    # GPIO.setmode(GPIO.BCM)
 
     PIN_TRIGGER = 7
-    # PIN_ECHO = 11 # Raspberry pi 3
     PIN_ECHO = 13  # Raspberry pi Zero
-
-    # PIN_TRIGGER = 4  # BMC
-    # PIN_ECHO = 27  # BMC
 
     GPIO.setup(PIN_TRIGGER, GPIO.OUT)
     GPIO.setup(PIN_ECHO, GPIO.IN)
