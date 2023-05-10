@@ -25,7 +25,7 @@ import logger_csv
 # -------  LOGGER METHODS -------
 
 # Create a values dict to store the data
-variables = ["distance", "litros"]
+variables = ["distance", "litros", "litrosTotales"]
 values_dic = {}
 
 
@@ -36,9 +36,10 @@ def save_data(idx, data):
     values_dic[variable] = np.append(values_dic[variable][1:], [data])
 
 
-def save_all_data(distance, litros):
+def save_all_data(distance, litros, litrosTotales):
     save_data(0, distance)
     save_data(1, litros)
+    save_data(1, litrosTotales)
 
 
 def log():
@@ -46,7 +47,10 @@ def log():
     
     dic_log = {'time': datetime.now(),
                'distance': values_dic['distance'][-1],
-               'litros': values_dic['litros'][-1]}
+               'litros': values_dic['litros'][-1],
+               'litrosTotales': values_dic['litrosTotales'][-1]}
+    
+    logging.info(dic_log)
     print(dic_log)
     logger.collect_data('water_level', dic_log)
     logger.log_data()
@@ -136,10 +140,11 @@ try:
         print(text_distance)
 
         litros = calcular_litros_agua(distance)
-        text_litros = "Cant litros: {} litros".format(litros)
+        litrosTotales = litros*6
+        text_litros = "Litros: {} x barril - {} total".format(litros, litrosTotales)
         print(text_litros)
 
-        save_all_data(distance, litros)
+        save_all_data(distance, litros, litrosTotales)
         log()
 
         mostrar_en_pantalla(text_distance, text_litros)
