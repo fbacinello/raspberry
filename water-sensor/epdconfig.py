@@ -35,7 +35,7 @@ import time
 
 class RaspberryPi:
     # Pin definition
-    RST_PIN = 11
+    RST_PIN = 16
     DC_PIN = 22
     CS_PIN = 24
     BUSY_PIN = 18
