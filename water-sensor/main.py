@@ -21,6 +21,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 import logger_csv
 
+PANTALLA = False
 
 # -------  LOGGER METHODS -------
 
@@ -147,7 +148,8 @@ try:
         save_all_data(distance, litros, litrosTotales)
         log()
 
-        mostrar_en_pantalla(text_distance, text_litros)
+        if PANTALLA:
+            mostrar_en_pantalla(text_distance, text_litros)
 
         time.sleep(60)
 
