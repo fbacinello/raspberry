@@ -118,9 +118,11 @@ try:
         logging.info("epd2in9 - Init and Clear")
         epd.init()
         epd.Clear(0xFF)
+        
+        font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
+        font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
 
-    font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
-    font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
+
 
     inicializar_variables_data()
       
