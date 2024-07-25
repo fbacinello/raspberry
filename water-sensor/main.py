@@ -111,7 +111,7 @@ def mostrar_en_pantalla(text_distance, text_litros, girar_180_grados = False):
 
 
 try:
-    logging.info(datetime.now() + " - Iniciando programa")
+    logging.info(datetime.now().strftime('%Y_%m_%d') + " - Iniciando programa")
     if PANTALLA:
         logging.info("epd2in9 V2 Demo")
         epd = epd2in9_V2.EPD()
