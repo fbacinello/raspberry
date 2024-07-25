@@ -6,8 +6,6 @@ from datetime import datetime
 import sys
 import os
 
-
-import epd2in9_V2
 import time
 import logging
 
@@ -22,6 +20,7 @@ import logger_csv
 
 PANTALLA = False
 if PANTALLA:
+    import epd2in9_V2
     from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 
 # -------  LOGGER METHODS -------
@@ -108,7 +107,7 @@ def mostrar_en_pantalla(text_distance, text_litros, girar_180_grados = False):
     if girar_180_grados:
         image = image.transpose(method=Image.ROTATE_180)
 
-    #epd.display(epd.getbuffer(image))
+    epd.display(epd.getbuffer(image))
 
 
 try:
