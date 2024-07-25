@@ -51,7 +51,7 @@ def log():
                'litros': values_dic['litros'][-1],
                'litrosTotales': values_dic['litrosTotales'][-1]}
     
-    logging.info(dic_log)
+    #logging.info(dic_log)
     print(dic_log)
     logger.collect_data('water_level', dic_log)
     logger.log_data()
@@ -111,6 +111,7 @@ def mostrar_en_pantalla(text_distance, text_litros, girar_180_grados = False):
 
 
 try:
+    logging.info("Iniciando programa")
     if PANTALLA:
         logging.info("epd2in9 V2 Demo")
         epd = epd2in9_V2.EPD()
@@ -118,7 +119,7 @@ try:
         logging.info("epd2in9 - Init and Clear")
         epd.init()
         epd.Clear(0xFF)
-        
+
         font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
         font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
 
