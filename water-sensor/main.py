@@ -9,7 +9,6 @@ import os
 
 import epd2in9_V2
 import time
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import logging
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
@@ -22,6 +21,8 @@ logging.basicConfig(level=logging.DEBUG)
 import logger_csv
 
 PANTALLA = False
+if PANTALLA:
+    from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 
 # -------  LOGGER METHODS -------
 
@@ -111,12 +112,13 @@ def mostrar_en_pantalla(text_distance, text_litros, girar_180_grados = False):
 
 
 try:
-    logging.info("epd2in9 V2 Demo")
-    epd = epd2in9_V2.EPD()
+    if PANTALLA:
+        logging.info("epd2in9 V2 Demo")
+        epd = epd2in9_V2.EPD()
 
-    logging.info("init and Clear")
-    epd.init()
-    epd.Clear(0xFF)
+        logging.info("epd2in9 - Init and Clear")
+        epd.init()
+        epd.Clear(0xFF)
 
     font24 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 24)
     font18 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 18)
