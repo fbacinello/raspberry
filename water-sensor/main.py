@@ -108,7 +108,7 @@ def mostrar_en_pantalla(text_distance, text_litros, girar_180_grados = False):
     if girar_180_grados:
         image = image.transpose(method=Image.ROTATE_180)
 
-    epd.display(epd.getbuffer(image))
+    #epd.display(epd.getbuffer(image))
 
 
 try:
