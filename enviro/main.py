@@ -373,7 +373,7 @@ def apagar_luz_active():
         f.write('0\n')
 
 
-apagar_luz_active()
+# apagar_luz_active()
 inicializar_variables_data()
 
 t_logger = threading.Thread(target=retardar_logger)
